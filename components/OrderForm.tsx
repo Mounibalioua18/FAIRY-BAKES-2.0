@@ -141,7 +141,7 @@ export const OrderForm: React.FC = () => {
 
   if (status === FormStatus.SUCCESS) {
     return (
-      <section id="order" className="py-24 px-6 md:px-12 bg-rose-50 text-center">
+      <section id="order" className="py-24 px-6 md:px-12 bg-rose-50 text-center scroll-mt-24">
         <div className="max-w-2xl mx-auto py-20 bg-white rounded-[3rem] shadow-xl px-10">
           <CheckCircle2 className="w-20 h-20 text-green-400 mx-auto mb-6" />
           <h2 className="text-4xl font-serif mb-4">Commande Reçue!</h2>
@@ -160,7 +160,7 @@ export const OrderForm: React.FC = () => {
   }
 
   return (
-    <section id="order" className="py-24 px-6 md:px-12 bg-white">
+    <section id="order" className="py-24 px-6 md:px-12 bg-white scroll-mt-24">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div>
