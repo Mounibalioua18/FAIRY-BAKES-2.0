@@ -24,10 +24,13 @@ export const Navbar: React.FC = () => {
       </a>
       
       <div className="hidden md:flex space-x-6 md:space-x-12 text-[9px] md:text-[11px] uppercase tracking-[0.2em] md:tracking-[0.3em] font-semibold text-stone-500">
-        <Link to="/taob" className="hover:text-rose-400 transition-all hover:tracking-[0.4em]">TAOB</Link>
-        {!isTAOB && (
-          <a href="/#order" className="hover:text-rose-400 transition-all hover:tracking-[0.4em]">Reserve your date</a>
-        )}
+        <Link 
+          to="/taob" 
+          className={`transition-all hover:tracking-[0.4em] ${isTAOB ? 'text-rose-400' : 'hover:text-rose-400'}`}
+        >
+          TAOB
+        </Link>
+        <a href="/#order" className="hover:text-rose-400 transition-all hover:tracking-[0.4em]">Reserve your date</a>
       </div>
     </nav>
   );
