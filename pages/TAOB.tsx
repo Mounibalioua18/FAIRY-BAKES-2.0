@@ -4,14 +4,22 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { ScrollToTop } from '../components/ScrollToTop';
-import { Check, Play, BookOpen, Infinity, MessageCircle, Send, Copy } from 'lucide-react';
+import { Check, Play, BookOpen, Infinity, MessageCircle, Send, Copy, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import { FormStatus } from '../types';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const TAOB: React.FC = () => {
   const mainRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [copiedBaridi, setCopiedBaridi] = useState(false);
   const [copiedCCP, setCopiedCCP] = useState(false);
+  
+  const [status, setStatus] = useState<FormStatus>(FormStatus.IDLE);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [formData, setFormData] = useState({ name: '', instagram: '', phone: '' });
+  const [proofFile, setProofFile] = useState<File | null>(null);
 
   const handleCopy = (text: string, type: 'baridi' | 'ccp') => {
     navigator.clipboard.writeText(text);
@@ -21,6 +29,71 @@ export const TAOB: React.FC = () => {
     } else {
       setCopiedCCP(true);
       setTimeout(() => setCopiedCCP(false), 2000);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 50 * 1024 * 1024) {
+        alert("File is too large. Max 50MB.");
+        return;
+      }
+      setProofFile(file);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!proofFile) {
+      setErrorMessage("Veuillez uploader la preuve de paiement / Capture d'écran du virement.");
+      return;
+    }
+
+    setStatus(FormStatus.SUBMITTING);
+    setErrorMessage(null);
+
+    try {
+      // 1. Upload proof to Supabase Storage 'proofs' bucket
+      const fileExt = proofFile.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('proofs')
+        .upload(filePath, proofFile);
+        
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('proofs')
+        .getPublicUrl(filePath);
+
+      // 2. Insert record into taob_signups
+      const { error: insertError } = await supabase
+        .from('taob_signups')
+        .insert([
+          {
+            name: formData.name,
+            instagram: formData.instagram,
+            phone: formData.phone,
+            proof_image_url: publicUrl
+          }
+        ]);
+
+      if (insertError) throw insertError;
+
+      setStatus(FormStatus.SUCCESS);
+      setFormData({ name: '', instagram: '', phone: '' });
+      setProofFile(null);
+    } catch (error: any) {
+      console.error('Supabase error:', error);
+      setStatus(FormStatus.ERROR);
+      setErrorMessage(error.message || 'Une erreur est survenue. Veuillez réessayer.');
     }
   };
 
@@ -215,44 +288,87 @@ export const TAOB: React.FC = () => {
 
                 {/* Form */}
                 <div className="lg:col-span-3 bg-white p-8 sm:p-10 lg:p-16 rounded-[2rem] lg:rounded-l-none border border-stone-100 shadow-xl lg:-ml-4 fade-up">
-                  <h2 className="text-2xl md:text-3xl font-serif text-stone-900 mb-2">Rejoindre la formation</h2>
-                  <p className="text-sm md:text-base text-stone-500 font-light mb-8 md:mb-10">Remplissez ce formulaire après avoir effectué votre paiement.</p>
-                  
-                  <form className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="name" className="block text-xs uppercase tracking-widest text-stone-500 mb-2">Nom complet</label>
-                        <input type="text" id="name" className="w-full px-0 py-3 bg-transparent border-b border-stone-200 focus:border-rose-400 outline-none transition-colors font-light" placeholder="Votre nom" required />
-                      </div>
-                      <div>
-                        <label htmlFor="instagram" className="block text-xs uppercase tracking-widest text-stone-500 mb-2">Instagram @</label>
-                        <input type="text" id="instagram" className="w-full px-0 py-3 bg-transparent border-b border-stone-200 focus:border-rose-400 outline-none transition-colors font-light" placeholder="@votre_compte" required />
-                      </div>
+                  {status === FormStatus.SUCCESS ? (
+                    <div className="text-center py-10">
+                      <CheckCircle2 className="w-16 h-16 text-green-400 mx-auto mb-6" />
+                      <h2 className="text-2xl md:text-3xl font-serif mb-4">Inscription Reçue!</h2>
+                      <p className="text-stone-500 mb-8">
+                        Merci de votre confiance. Nous allons vérifier votre paiement et vous contacterons sur Telegram / Instagram sous peu.
+                      </p>
+                      <button 
+                        onClick={() => setStatus(FormStatus.IDLE)}
+                        className="text-rose-500 font-semibold uppercase tracking-widest text-sm hover:underline"
+                      >
+                        Nouvelle Inscription
+                      </button>
                     </div>
-                    
-                    <div>
-                      <label htmlFor="phone" className="block text-xs uppercase tracking-widest text-stone-500 mb-2">Numéro Telegram</label>
-                      <input type="tel" id="phone" className="w-full px-0 py-3 bg-transparent border-b border-stone-200 focus:border-rose-400 outline-none transition-colors font-light" placeholder="Votre numéro" required />
-                    </div>
-                    
-                    <div className="pt-2 md:pt-4">
-                      <label htmlFor="proof" className="block text-xs uppercase tracking-widest text-stone-500 mb-3 md:mb-4">Preuve de paiement (photo)</label>
-                      <div className="border-2 border-dashed border-stone-200 rounded-xl p-6 md:p-8 text-center hover:border-rose-300 transition-colors cursor-pointer group">
-                        <input type="file" id="proof" accept="image/*" className="hidden" required />
-                        <label htmlFor="proof" className="cursor-pointer flex flex-col items-center">
-                          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                            <Send size={18} className="md:w-5 md:h-5" />
+                  ) : (
+                    <>
+                      <h2 className="text-2xl md:text-3xl font-serif text-stone-900 mb-2">Rejoindre la formation</h2>
+                      <p className="text-sm md:text-base text-stone-500 font-light mb-8 md:mb-10">Remplissez ce formulaire après avoir effectué votre paiement.</p>
+                      
+                      <form onSubmit={handleSubmit} className="space-y-6">
+                        {status === FormStatus.ERROR && (
+                          <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
+                            <AlertCircle size={18} />
+                            {errorMessage}
                           </div>
-                          <span className="text-sm md:text-base text-stone-600 font-medium mb-1">Cliquez pour uploader</span>
-                          <span className="text-xs md:text-sm text-stone-400 font-light">preuve du virement</span>
-                        </label>
-                      </div>
-                    </div>
-                    
-                    <button type="submit" className="w-full mt-8 bg-stone-900 text-white py-5 rounded-xl font-medium tracking-[0.2em] uppercase text-sm hover:bg-rose-400 transition-colors">
-                      Soumettre l'inscription
-                    </button>
-                  </form>
+                        )}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <label htmlFor="name" className="block text-xs uppercase tracking-widest text-stone-500 mb-2">Nom complet</label>
+                            <input type="text" id="name" value={formData.name} onChange={handleChange} className="w-full px-0 py-3 bg-transparent border-b border-stone-200 focus:border-rose-400 outline-none transition-colors font-light" placeholder="Votre nom" required />
+                          </div>
+                          <div>
+                            <label htmlFor="instagram" className="block text-xs uppercase tracking-widest text-stone-500 mb-2">Instagram @</label>
+                            <input type="text" id="instagram" value={formData.instagram} onChange={handleChange} className="w-full px-0 py-3 bg-transparent border-b border-stone-200 focus:border-rose-400 outline-none transition-colors font-light" placeholder="@votre_compte" required />
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label htmlFor="phone" className="block text-xs uppercase tracking-widest text-stone-500 mb-2">Numéro Telegram</label>
+                          <input type="tel" id="phone" value={formData.phone} onChange={handleChange} className="w-full px-0 py-3 bg-transparent border-b border-stone-200 focus:border-rose-400 outline-none transition-colors font-light" placeholder="Votre numéro" required />
+                        </div>
+                        
+                        <div className="pt-2 md:pt-4">
+                          <label htmlFor="proof" className="block text-xs uppercase tracking-widest text-stone-500 mb-3 md:mb-4">Preuve de paiement (photo)</label>
+                          <div className="border-2 border-dashed border-stone-200 rounded-xl p-6 md:p-8 text-center hover:border-rose-300 transition-colors cursor-pointer group">
+                            <input type="file" ref={fileInputRef} onChange={handleFileChange} id="proof" accept="image/*" className="hidden" required />
+                            <label htmlFor="proof" className="cursor-pointer flex flex-col items-center">
+                              {proofFile ? (
+                                <>
+                                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-green-50 flex items-center justify-center text-green-400 mb-3 md:mb-4">
+                                    <CheckCircle2 size={18} className="md:w-5 md:h-5" />
+                                  </div>
+                                  <span className="text-sm md:text-base text-stone-600 font-medium mb-1 truncate max-w-[200px]">{proofFile.name}</span>
+                                  <span className="text-xs md:text-sm text-green-500 font-light">Image sélectionnée</span>
+                                </>
+                              ) : (
+                                <>
+                                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-3 md:mb-4 group-hover:scale-110 transition-transform">
+                                    <Send size={18} className="md:w-5 md:h-5" />
+                                  </div>
+                                  <span className="text-sm md:text-base text-stone-600 font-medium mb-1">Cliquez pour uploader</span>
+                                  <span className="text-xs md:text-sm text-stone-400 font-light">preuve du virement</span>
+                                </>
+                              )}
+                            </label>
+                          </div>
+                        </div>
+                        
+                        <button disabled={status === FormStatus.SUBMITTING} type="submit" className="w-full mt-8 bg-stone-900 text-white py-5 rounded-xl font-medium tracking-[0.2em] uppercase text-sm hover:bg-rose-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center">
+                          {status === FormStatus.SUBMITTING ? (
+                            <span className="flex items-center gap-2">
+                              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                              Envoi en cours...
+                            </span>
+                          ) : (
+                            "Soumettre l'inscription"
+                          )}
+                        </button>
+                      </form>
+                    </>
+                  )}
                 </div>
 
               </div>
