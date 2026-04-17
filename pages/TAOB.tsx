@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { ScrollToTop } from '../components/ScrollToTop';
-import { Check, Play, BookOpen, Infinity, MessageCircle, Send, Copy, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Check, Play, BookOpen, Infinity, MessageCircle, Send, Copy, AlertCircle, CheckCircle2, Upload, X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { FormStatus } from '../types';
 
@@ -20,6 +20,7 @@ export const TAOB: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: '', instagram: '', phone: '' });
   const [proofFile, setProofFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleCopy = (text: string, type: 'baridi' | 'ccp') => {
     navigator.clipboard.writeText(text);
@@ -44,7 +45,18 @@ export const TAOB: React.FC = () => {
         return;
       }
       setProofFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
+  };
+
+  const removeImage = () => {
+    setPreviewUrl(null);
+    setProofFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -90,6 +102,7 @@ export const TAOB: React.FC = () => {
       setStatus(FormStatus.SUCCESS);
       setFormData({ name: '', instagram: '', phone: '' });
       setProofFile(null);
+      setPreviewUrl(null);
     } catch (error: any) {
       console.error('Supabase error:', error);
       setStatus(FormStatus.ERROR);
@@ -289,15 +302,15 @@ export const TAOB: React.FC = () => {
                 {/* Form */}
                 <div className="lg:col-span-3 bg-white p-8 sm:p-10 lg:p-16 rounded-[2rem] lg:rounded-l-none border border-stone-100 shadow-xl lg:-ml-4 fade-up">
                   {status === FormStatus.SUCCESS ? (
-                    <div className="text-center py-10">
-                      <CheckCircle2 className="w-16 h-16 text-green-400 mx-auto mb-6" />
-                      <h2 className="text-2xl md:text-3xl font-serif mb-4">Inscription Reçue!</h2>
-                      <p className="text-stone-500 mb-8">
-                        Merci de votre confiance. Nous allons vérifier votre paiement et vous contacterons sur Telegram / Instagram sous peu.
+                    <div className="flex flex-col items-center text-center py-12 px-6 h-full justify-center min-h-[500px]">
+                      <CheckCircle2 className="w-20 h-20 text-green-400 mb-6" />
+                      <h2 className="text-3xl md:text-4xl font-serif mb-4 text-stone-900">Inscription Reçue !</h2>
+                      <p className="text-stone-500 mb-10 leading-relaxed max-w-sm">
+                        Merci de votre confiance. Nous allons vérifier votre paiement et nous reviendrons vers vous très bientôt pour vous donner accès à la formation.
                       </p>
                       <button 
                         onClick={() => setStatus(FormStatus.IDLE)}
-                        className="text-rose-500 font-semibold uppercase tracking-widest text-sm hover:underline"
+                        className="bg-stone-900 text-white px-8 py-4 rounded-xl font-medium tracking-[0.2em] uppercase text-xs hover:bg-rose-400 transition-colors"
                       >
                         Nouvelle Inscription
                       </button>
@@ -316,47 +329,60 @@ export const TAOB: React.FC = () => {
                         )}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
-                            <label htmlFor="name" className="block text-xs uppercase tracking-widest text-stone-500 mb-2">Nom complet</label>
-                            <input type="text" id="name" value={formData.name} onChange={handleChange} className="w-full px-0 py-3 bg-transparent border-b border-stone-200 focus:border-rose-400 outline-none transition-colors font-light" placeholder="Votre nom" required />
+                            <label htmlFor="name" className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Nom complet</label>
+                            <input type="text" id="name" value={formData.name} onChange={handleChange} className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all font-light" placeholder="Votre nom" required />
                           </div>
                           <div>
-                            <label htmlFor="instagram" className="block text-xs uppercase tracking-widest text-stone-500 mb-2">Instagram @</label>
-                            <input type="text" id="instagram" value={formData.instagram} onChange={handleChange} className="w-full px-0 py-3 bg-transparent border-b border-stone-200 focus:border-rose-400 outline-none transition-colors font-light" placeholder="@votre_compte" required />
+                            <label htmlFor="instagram" className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Instagram @</label>
+                            <input type="text" id="instagram" value={formData.instagram} onChange={handleChange} className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all font-light" placeholder="@votre_compte" required />
                           </div>
                         </div>
                         
                         <div>
-                          <label htmlFor="phone" className="block text-xs uppercase tracking-widest text-stone-500 mb-2">Numéro Telegram</label>
-                          <input type="tel" id="phone" value={formData.phone} onChange={handleChange} className="w-full px-0 py-3 bg-transparent border-b border-stone-200 focus:border-rose-400 outline-none transition-colors font-light" placeholder="Votre numéro" required />
+                          <label htmlFor="phone" className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Numéro Telegram</label>
+                          <input type="tel" id="phone" value={formData.phone} onChange={handleChange} className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all font-light" placeholder="Votre numéro" required />
                         </div>
                         
-                        <div className="pt-2 md:pt-4">
-                          <label htmlFor="proof" className="block text-xs uppercase tracking-widest text-stone-500 mb-3 md:mb-4">Preuve de paiement (photo)</label>
-                          <div className="border-2 border-dashed border-stone-200 rounded-xl p-6 md:p-8 text-center hover:border-rose-300 transition-colors cursor-pointer group">
-                            <input type="file" ref={fileInputRef} onChange={handleFileChange} id="proof" accept="image/*" className="hidden" required />
-                            <label htmlFor="proof" className="cursor-pointer flex flex-col items-center">
-                              {proofFile ? (
-                                <>
-                                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-green-50 flex items-center justify-center text-green-400 mb-3 md:mb-4">
-                                    <CheckCircle2 size={18} className="md:w-5 md:h-5" />
-                                  </div>
-                                  <span className="text-sm md:text-base text-stone-600 font-medium mb-1 truncate max-w-[200px]">{proofFile.name}</span>
-                                  <span className="text-xs md:text-sm text-green-500 font-light">Image sélectionnée</span>
-                                </>
-                              ) : (
-                                <>
-                                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                                    <Send size={18} className="md:w-5 md:h-5" />
-                                  </div>
-                                  <span className="text-sm md:text-base text-stone-600 font-medium mb-1">Cliquez pour uploader</span>
-                                  <span className="text-xs md:text-sm text-stone-400 font-light">preuve du virement</span>
-                                </>
-                              )}
-                            </label>
+                        <div className="mb-8">
+                          <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Preuve de paiement (photo)</label>
+                          <div 
+                            onClick={() => !previewUrl && fileInputRef.current?.click()}
+                            className={`relative border-2 border-dashed rounded-2xl transition-all flex flex-col items-center justify-center p-4 cursor-pointer overflow-hidden ${
+                              previewUrl ? 'border-rose-200 bg-white h-48' : 'border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 h-32'
+                            }`}
+                          >
+                            <input 
+                              type="file" 
+                              ref={fileInputRef}
+                              onChange={handleFileChange}
+                              accept="image/*"
+                              className="hidden"
+                            />
+                            
+                            {previewUrl ? (
+                              <div className="relative w-full h-full group">
+                                <img src={previewUrl} alt="Preview" className="w-full h-full object-contain rounded-lg" />
+                                <button 
+                                  type="button"
+                                  onClick={(e) => { e.stopPropagation(); removeImage(); }}
+                                  className="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-full shadow-lg hover:bg-rose-600 transition-colors"
+                                >
+                                  <X size={14} />
+                                </button>
+                              </div>
+                            ) : (
+                              <>
+                                <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-2">
+                                  <Upload size={20} />
+                                </div>
+                                <p className="text-[11px] text-stone-400 uppercase tracking-widest font-semibold text-center px-4">Upload de la preuve</p>
+                                <p className="text-[9px] text-stone-300 mt-1">preuve du virement</p>
+                              </>
+                            )}
                           </div>
                         </div>
                         
-                        <button disabled={status === FormStatus.SUBMITTING} type="submit" className="w-full mt-8 bg-stone-900 text-white py-5 rounded-xl font-medium tracking-[0.2em] uppercase text-sm hover:bg-rose-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center">
+                        <button disabled={status === FormStatus.SUBMITTING} type="submit" className="w-full mt-4 bg-stone-900 text-white py-5 rounded-xl font-medium tracking-[0.2em] uppercase text-sm hover:bg-rose-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center">
                           {status === FormStatus.SUBMITTING ? (
                             <span className="flex items-center gap-2">
                               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
