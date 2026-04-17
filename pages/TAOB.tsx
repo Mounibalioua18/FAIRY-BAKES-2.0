@@ -214,8 +214,15 @@ export const TAOB: React.FC = () => {
                 <div className="col-span-2 md:row-span-2 aspect-video md:aspect-auto md:h-[500px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-md fade-up border border-white/50">
                   <img src="https://i.imgur.com/7ozYAqY.jpeg" alt="Formation aperçu" className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" referrerPolicy="no-referrer" />
                 </div>
-                <div className="col-span-1 aspect-square md:aspect-auto md:h-[238px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-md fade-up border border-white/50">
-                  <img src="https://i.imgur.com/IhgOril.jpeg" alt="Détail" className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" referrerPolicy="no-referrer" />
+                <div className="col-span-1 aspect-square md:aspect-auto md:h-[238px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-md fade-up border border-white/50 relative">
+                  <video 
+                    src="https://i.imgur.com/H3gOYlk.mp4" 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline 
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" 
+                  />
                 </div>
                 <div className="col-span-1 aspect-square md:aspect-auto md:h-[238px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-md fade-up border border-white/50">
                   <img src="https://i.imgur.com/cTtYp4d.jpeg" alt="Crème au beurre" className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" referrerPolicy="no-referrer" />
