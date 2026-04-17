@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { Send, CheckCircle2, AlertCircle, Info, Upload, X } from 'lucide-react';
 import { FormStatus, CakeOrder } from '../types';
-import { databases, storage, APPWRITE_CONFIG, ID } from '../lib/appwrite';
+import { supabase } from '../lib/supabase';
 
 export const OrderForm: React.FC = () => {
   const [status, setStatus] = useState<FormStatus>(FormStatus.IDLE);
@@ -42,45 +42,53 @@ export const OrderForm: React.FC = () => {
 
       // 1. Upload Image to Storage if exists
       if (selectedFile) {
-        const uploadResponse = await storage.createFile(
-          APPWRITE_CONFIG.bucketId,
-          ID.unique(),
-          selectedFile
-        );
-        
-        // Construct the full public URL explicitly
-        // Format: https://cloud.appwrite.io/v1/storage/buckets/[BUCKET_ID]/files/[FILE_ID]/view?project=[PROJECT_ID]
-        const fileId = uploadResponse.$id;
-        finalFileUrl = `https://cloud.appwrite.io/v1/storage/buckets/${APPWRITE_CONFIG.bucketId}/files/${fileId}/view?project=${APPWRITE_CONFIG.projectId}`;
+        const fileExt = selectedFile.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('inspirations')
+          .upload(filePath, selectedFile);
+          
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('inspirations')
+          .getPublicUrl(filePath);
+
+        finalFileUrl = publicUrl;
       }
 
-      // 2. Create the main Order Document in 'fairy' collection
-      const orderResponse = await databases.createDocument(
-        APPWRITE_CONFIG.databaseId,
-        APPWRITE_CONFIG.collectionId,
-        ID.unique(),
-        {
-          customerName: formData.customerName,
-          phoneNumber: parseInt(formData.phoneNumber.replace(/\D/g, '') || '0'),
-          instagramHandle: formData.instagramHandle,
-          eventDate: new Date(formData.eventDate).toISOString(),
-          cakeSize: formData.cakeSize,
-          flavor: formData.flavor
-        }
-      );
-
-      // 3. Create entry in 'gallerie' collection if image exists
-      // We save the full URL string into the 'images' array
-      if (finalFileUrl) {
-        await databases.createDocument(
-          APPWRITE_CONFIG.databaseId,
-          APPWRITE_CONFIG.gallerieCollectionId,
-          ID.unique(),
+      // 2. Create the main Order Document
+      const { data: orderData, error: orderError } = await supabase
+        .from('orders')
+        .insert([
           {
-            propertyId: orderResponse.$id,
-            images: [finalFileUrl]
+            customer_name: formData.customerName,
+            phone_number: formData.phoneNumber,
+            instagram_handle: formData.instagramHandle,
+            event_date: formData.eventDate,
+            cake_size: formData.cakeSize,
+            flavor: formData.flavor
           }
-        );
+        ])
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      // 3. Create entry in 'galleries' table if image exists
+      if (finalFileUrl && orderData) {
+        const { error: galleryError } = await supabase
+          .from('galleries')
+          .insert([
+            {
+              order_id: orderData.id,
+              images: [finalFileUrl]
+            }
+          ]);
+          
+        if (galleryError) throw galleryError;
       }
 
       setStatus(FormStatus.SUCCESS);
@@ -96,7 +104,7 @@ export const OrderForm: React.FC = () => {
         inspiration: ''
       });
     } catch (error: any) {
-      console.error('Appwrite error:', error);
+      console.error('Supabase error:', error);
       setStatus(FormStatus.ERROR);
       setErrorMessage(error.message || 'Something went wrong. Please check your connection.');
     }
