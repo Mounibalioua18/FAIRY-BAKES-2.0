@@ -160,13 +160,13 @@ export const TAOB: React.FC = () => {
       <div className="relative z-10">
         <Navbar />
         
-        <main className="pt-40 pb-32 px-6 md:px-12 max-w-6xl mx-auto">
+        <main className="pt-48 md:pt-56 pb-32 px-6 md:px-12 max-w-6xl mx-auto">
           
           {/* Header Section */}
           <div className="text-center mb-16 md:mb-24 fade-up">
             <h1 className="flex flex-col items-center justify-center mb-6 md:mb-8">
-              <span className="font-serif text-rose-400 text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide">The Art Of</span>
-              <span className="font-signature text-rose-400 text-6xl sm:text-8xl md:text-[10rem] leading-none -mt-4 sm:-mt-8 md:-mt-12">Buttercream</span>
+              <span className="font-serif text-rose-400 text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide relative z-10">The Art Of</span>
+              <span className="font-signature text-rose-400 text-6xl sm:text-8xl md:text-[10rem] leading-none -mt-4 sm:-mt-6 md:-mt-8 relative z-0">Buttercream</span>
             </h1>
             <div className="flex items-center justify-center gap-2 md:gap-4">
               <div className="h-[1px] w-8 md:w-12 bg-rose-300"></div>
