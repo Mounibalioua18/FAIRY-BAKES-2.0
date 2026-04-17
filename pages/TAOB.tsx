@@ -249,7 +249,24 @@ export const TAOB: React.FC = () => {
 
             {/* Payment & Form */}
             <section className="max-w-5xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-0">
+              {status === FormStatus.SUCCESS ? (
+                <div className="min-h-[80vh] flex flex-col items-center justify-center fade-up mt-4 md:mt-8">
+                  <div className="bg-white p-12 lg:p-20 rounded-[3rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-stone-100 text-center max-w-2xl w-full flex flex-col items-center">
+                    <CheckCircle2 className="w-20 h-20 text-green-400 mb-6" />
+                    <h2 className="text-3xl md:text-4xl font-serif mb-4 text-stone-900">Inscription Reçue !</h2>
+                    <p className="text-stone-500 mb-10 leading-relaxed max-w-md mx-auto">
+                      Merci de votre confiance. Nous allons vérifier votre paiement et nous reviendrons vers vous très bientôt pour vous donner accès à la formation.
+                    </p>
+                    <button 
+                      onClick={() => setStatus(FormStatus.IDLE)}
+                      className="bg-stone-900 text-white px-8 py-4 rounded-xl font-medium tracking-[0.2em] uppercase text-xs hover:bg-rose-400 transition-colors"
+                    >
+                      Nouvelle Inscription
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-0">
                 
                 {/* Payment Info */}
                 <div className="lg:col-span-2 bg-stone-900 text-white p-8 sm:p-10 lg:p-12 rounded-[2rem] lg:rounded-r-none relative z-10 shadow-xl fade-up">
@@ -301,26 +318,10 @@ export const TAOB: React.FC = () => {
 
                 {/* Form */}
                 <div className="lg:col-span-3 bg-white p-8 sm:p-10 lg:p-16 rounded-[2rem] lg:rounded-l-none border border-stone-100 shadow-xl lg:-ml-4 fade-up">
-                  {status === FormStatus.SUCCESS ? (
-                    <div className="flex flex-col items-center text-center py-12 px-6 h-full justify-center min-h-[500px]">
-                      <CheckCircle2 className="w-20 h-20 text-green-400 mb-6" />
-                      <h2 className="text-3xl md:text-4xl font-serif mb-4 text-stone-900">Inscription Reçue !</h2>
-                      <p className="text-stone-500 mb-10 leading-relaxed max-w-sm">
-                        Merci de votre confiance. Nous allons vérifier votre paiement et nous reviendrons vers vous très bientôt pour vous donner accès à la formation.
-                      </p>
-                      <button 
-                        onClick={() => setStatus(FormStatus.IDLE)}
-                        className="bg-stone-900 text-white px-8 py-4 rounded-xl font-medium tracking-[0.2em] uppercase text-xs hover:bg-rose-400 transition-colors"
-                      >
-                        Nouvelle Inscription
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      <h2 className="text-2xl md:text-3xl font-serif text-stone-900 mb-2">Rejoindre la formation</h2>
-                      <p className="text-sm md:text-base text-stone-500 font-light mb-8 md:mb-10">Remplissez ce formulaire après avoir effectué votre paiement.</p>
-                      
-                      <form onSubmit={handleSubmit} className="space-y-6">
+                  <h2 className="text-2xl md:text-3xl font-serif text-stone-900 mb-2">Rejoindre la formation</h2>
+                  <p className="text-sm md:text-base text-stone-500 font-light mb-8 md:mb-10">Remplissez ce formulaire après avoir effectué votre paiement.</p>
+                  
+                  <form onSubmit={handleSubmit} className="space-y-6">
                         {status === FormStatus.ERROR && (
                           <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
                             <AlertCircle size={18} />
@@ -393,11 +394,10 @@ export const TAOB: React.FC = () => {
                           )}
                         </button>
                       </form>
-                    </>
-                  )}
                 </div>
 
               </div>
+              )}
             </section>
 
           </div>

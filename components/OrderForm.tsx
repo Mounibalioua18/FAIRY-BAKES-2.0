@@ -149,16 +149,16 @@ export const OrderForm: React.FC = () => {
 
   if (status === FormStatus.SUCCESS) {
     return (
-      <section id="order" className="py-24 px-6 md:px-12 bg-rose-50 text-center scroll-mt-24">
-        <div className="max-w-2xl mx-auto py-20 bg-white rounded-[3rem] shadow-xl px-10">
-          <CheckCircle2 className="w-20 h-20 text-green-400 mx-auto mb-6" />
-          <h2 className="text-4xl font-serif mb-4">Commande Reçue!</h2>
-          <p className="text-stone-500 mb-8">
+      <section id="order" className="min-h-[80vh] flex flex-col items-center justify-center px-6 md:px-12 bg-white text-center scroll-mt-24">
+        <div className="max-w-2xl w-full mx-auto p-12 lg:p-20 bg-white rounded-[3rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-stone-100 flex flex-col items-center">
+          <CheckCircle2 className="w-20 h-20 text-green-400 mb-6" />
+          <h2 className="text-3xl md:text-4xl font-serif mb-4 text-stone-900">Commande Reçue !</h2>
+          <p className="text-stone-500 mb-10 leading-relaxed max-w-md mx-auto">
             Thank you for trusting Fairy Bakes. We will reach out via Instagram within 48 hours to confirm your {monthName} slot and discuss final details.
           </p>
           <button 
             onClick={() => setStatus(FormStatus.IDLE)}
-            className="text-rose-500 font-semibold uppercase tracking-widest text-sm hover:underline"
+            className="bg-stone-900 text-white px-8 py-4 rounded-xl font-medium tracking-[0.2em] uppercase text-xs hover:bg-rose-400 transition-colors"
           >
             Submit another order
           </button>
