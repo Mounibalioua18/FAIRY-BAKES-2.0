@@ -204,6 +204,27 @@ export const TAOB: React.FC = () => {
               </div>
             </div>
 
+            {/* Aperçu Gallery */}
+            <section className="max-w-6xl mx-auto mt-8">
+              <div className="text-center mb-12 fade-up">
+                <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-4">Aperçu de la formation</h2>
+                <p className="text-stone-500 font-light">Un regard sur ce qui vous attend à l'intérieur</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="md:col-span-2 h-80 md:h-[500px] rounded-[2rem] overflow-hidden shadow-md fade-up border border-white/50">
+                  <img src="https://i.imgur.com/7ozYAqY.jpeg" alt="Formation aperçu" className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" referrerPolicy="no-referrer" />
+                </div>
+                <div className="flex flex-col gap-6">
+                  <div className="h-40 md:h-[238px] rounded-[2rem] overflow-hidden shadow-md fade-up border border-white/50">
+                    <img src="https://i.imgur.com/IhgOril.jpeg" alt="Détail" className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" referrerPolicy="no-referrer" />
+                  </div>
+                  <div className="h-40 md:h-[238px] rounded-[2rem] overflow-hidden shadow-md fade-up border border-white/50">
+                    <img src="https://i.imgur.com/cTtYp4d.jpeg" alt="Crème au beurre" className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" referrerPolicy="no-referrer" />
+                  </div>
+                </div>
+              </div>
+            </section>
+
             {/* What you will learn */}
             <section className="max-w-4xl mx-auto">
               <div className="text-center mb-12 fade-up">
