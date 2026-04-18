@@ -7,11 +7,14 @@ import { ScrollToTop } from '../components/ScrollToTop';
 import { Check, Play, BookOpen, Infinity, MessageCircle, Send, Copy, AlertCircle, CheckCircle2, Upload, X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { FormStatus } from '../types';
+import { usePortfolio } from '../hooks/usePortfolio';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const TAOB: React.FC = () => {
   const mainRef = useRef<HTMLDivElement>(null);
+  const { taobImages } = usePortfolio();
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [copiedBaridi, setCopiedBaridi] = useState(false);
   const [copiedCCP, setCopiedCCP] = useState(false);
@@ -205,28 +208,42 @@ export const TAOB: React.FC = () => {
             </div>
 
             {/* Aperçu Gallery */}
-            <section className="max-w-6xl mx-auto mt-8">
-              <div className="text-center mb-12 fade-up">
+            <section className="max-w-5xl mx-auto mt-16 md:mt-24">
+              <div className="text-center mb-8 md:mb-12 fade-up">
                 <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-4">Aperçu de la formation</h2>
                 <p className="text-stone-500 font-light">Un regard sur ce qui vous attend à l'intérieur</p>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
-                <div className="col-span-2 md:row-span-2 aspect-video md:aspect-auto md:h-[500px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-md fade-up border border-white/50">
-                  <img src="https://i.imgur.com/7ozYAqY.jpeg" alt="Formation aperçu" className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" referrerPolicy="no-referrer" />
+              <div className="relative px-2 md:px-4 max-w-5xl mx-auto pb-4 md:pb-28">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+                  {taobImages.map((image, index) => {
+                    // Mobile: Bento box (1st wide, next 2 squares)
+                    // Desktop: Stair-step (1st low, 2nd mid, 3rd high)
+                    let placementClasses = '';
+                    if (index === 0) {
+                      placementClasses = 'col-span-2 aspect-[4/3] md:col-span-1 md:aspect-[3/4] md:translate-y-24';
+                    } else if (index === 1) {
+                      placementClasses = 'col-span-1 aspect-square md:col-span-1 md:aspect-[3/4] md:translate-y-12';
+                    } else if (index === 2) {
+                      placementClasses = 'col-span-1 aspect-square md:col-span-1 md:aspect-[3/4] md:translate-y-0';
+                    } else {
+                      placementClasses = 'col-span-2 md:col-span-1 aspect-square md:aspect-[3/4]';
+                    }
+
+                    return (
+                      <div 
+                        key={image.id || index} 
+                        className={`fade-up rounded-xl md:rounded-[2rem] shadow-xl overflow-hidden w-full ${placementClasses}`}
+                      >
+                        {image?.image_url?.match(/\.(mp4|webm)$/i) ? (
+                          <video src={image.image_url} autoPlay loop muted playsInline className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" />
+                        ) : (
+                          <img src={image?.image_url} alt={`Aperçu ${index + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" referrerPolicy="no-referrer" />
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
-                <div className="col-span-1 aspect-square md:aspect-auto md:h-[238px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-md fade-up border border-white/50 relative">
-                  <video 
-                    src="https://i.imgur.com/H3gOYlk.mp4" 
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline 
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" 
-                  />
-                </div>
-                <div className="col-span-1 aspect-square md:aspect-auto md:h-[238px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-md fade-up border border-white/50">
-                  <img src="https://i.imgur.com/cTtYp4d.jpeg" alt="Crème au beurre" className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" referrerPolicy="no-referrer" />
-                </div>
+                <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] max-w-2xl bg-rose-200/20 rounded-full blur-[100px] pointer-events-none"></div>
               </div>
             </section>
 

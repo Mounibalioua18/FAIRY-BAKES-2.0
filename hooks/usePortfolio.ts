@@ -33,6 +33,12 @@ const DEFAULT_PROCESS: PortfolioItem[] = [
   { id: '8', title: 'Process 2', description: '', image_url: 'https://i.imgur.com/RFffE8J.jpg', type: 'gallery', position: 8 }
 ];
 
+const DEFAULT_TAOB: PortfolioItem[] = [
+  { id: '9', title: 'TAOB Apercu 1', description: '', image_url: 'https://i.imgur.com/7ozYAqY.jpeg', type: 'gallery', position: 9 },
+  { id: '10', title: 'TAOB Apercu 2', description: '', image_url: 'https://i.imgur.com/IhgOril.jpeg', type: 'gallery', position: 10 },
+  { id: '11', title: 'TAOB Apercu 3', description: '', image_url: 'https://i.imgur.com/H3gOYlk.mp4', type: 'gallery', position: 11 }
+];
+
 export function usePortfolio() {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -78,10 +84,15 @@ export function usePortfolio() {
     return DEFAULT_PROCESS.map((fallback, index) => getDbImage('gallery', index + 7, fallback));
   };
 
+  const getTaobImages = () => {
+    return DEFAULT_TAOB.map((fallback, index) => getDbImage('gallery', index + 9, fallback));
+  };
+
   return { 
     mainImage: getMainImage(), 
     galleryImages: getGalleryImages(), 
     processImages: getProcessImages(), 
+    taobImages: getTaobImages(),
     loading 
   };
 }
