@@ -21,6 +21,7 @@ export const TAOB: React.FC = () => {
   
   const [status, setStatus] = useState<FormStatus>(FormStatus.IDLE);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<{name?: boolean, instagram?: boolean, phone?: boolean, proofFile?: boolean}>({});
   const [formData, setFormData] = useState({ name: '', instagram: '', phone: '0' });
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -37,6 +38,9 @@ export const TAOB: React.FC = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Clear error for this field
+    setFormErrors(prev => ({ ...prev, [e.target.id]: false }));
+
     if (e.target.id === 'phone') {
       // Allow only numbers and force to start with '0'
       let val = e.target.value.replace(/\D/g, '');
@@ -52,6 +56,8 @@ export const TAOB: React.FC = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Clear error for image
+    setFormErrors(prev => ({ ...prev, proofFile: false }));
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 50 * 1024 * 1024) {
@@ -76,13 +82,23 @@ export const TAOB: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!/^0[0-9]{9}$/.test(formData.phone)) {
-      setErrorMessage("Le numéro de téléphone doit contenir exactement 10 chiffres et commencer par un '0'.");
-      return;
-    }
+    // Check all fields at once to show all errors
+    const errors: any = {};
+    if (!formData.name.trim()) errors.name = true;
+    if (!formData.instagram.trim()) errors.instagram = true;
+    if (!/^0[0-9]{9}$/.test(formData.phone)) errors.phone = true;
+    if (!proofFile) errors.proofFile = true;
 
-    if (!proofFile) {
-      setErrorMessage("Veuillez uploader la preuve de paiement / Capture d'écran du virement.");
+    setFormErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      if (errors.phone && !errors.name && !errors.instagram && !errors.proofFile) {
+        setErrorMessage("Le numéro de téléphone doit contenir exactement 10 chiffres et commencer par un '0'.");
+      } else if (errors.proofFile && !errors.name && !errors.instagram && !errors.phone) {
+        setErrorMessage("Veuillez uploader la preuve de paiement / Capture d'écran du virement.");
+      } else {
+        setErrorMessage("Veuillez remplir correctement tous les champs obligatoires mis en évidence en rouge.");
+      }
       return;
     }
 
@@ -386,38 +402,48 @@ export const TAOB: React.FC = () => {
                   <h2 className="text-2xl md:text-3xl font-serif text-stone-900 mb-2">Rejoindre la formation</h2>
                   <p className="text-sm md:text-base text-stone-500 font-light mb-8 md:mb-10">Remplissez ce formulaire après avoir effectué votre paiement.</p>
                   
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit} noValidate className="space-y-6">
                         {status === FormStatus.ERROR && (
                           <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
                             <AlertCircle size={18} />
                             {errorMessage}
                           </div>
                         )}
+                        {(Object.keys(formErrors).length > 0 && status !== FormStatus.ERROR) && (
+                           <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
+                            <AlertCircle size={18} />
+                            {errorMessage || "Veuillez remplir correctement tous les champs obligatoires."}
+                          </div>
+                        )}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
-                            <label htmlFor="name" className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Nom complet</label>
-                            <input type="text" id="name" value={formData.name} onChange={handleChange} className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all font-light" placeholder="Votre nom" required />
+                            <label htmlFor="name" className={`block text-xs uppercase tracking-widest mb-2 font-bold ${formErrors.name ? 'text-red-500' : 'text-stone-500'}`}>Nom complet</label>
+                            <input type="text" id="name" value={formData.name} onChange={handleChange} className={`w-full bg-white border rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 transition-all font-light ${formErrors.name ? 'border-red-400 focus:ring-red-100' : 'border-stone-200 focus:ring-rose-100'}`} placeholder="Votre nom" required />
                           </div>
                           <div>
-                            <label htmlFor="instagram" className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Instagram Handle</label>
+                            <label htmlFor="instagram" className={`block text-xs uppercase tracking-widest mb-2 font-bold ${formErrors.instagram ? 'text-red-500' : 'text-stone-500'}`}>Instagram Handle</label>
                             <div className="relative">
                               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-400 font-bold select-none">@</span>
-                              <input type="text" id="instagram" value={formData.instagram} onChange={handleChange} className="w-full bg-white border border-stone-200 rounded-xl pl-9 pr-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all font-light" placeholder="votre_compte" required />
+                              <input type="text" id="instagram" value={formData.instagram} onChange={handleChange} className={`w-full bg-white border rounded-xl pl-9 pr-4 py-3 text-stone-800 focus:outline-none focus:ring-2 transition-all font-light ${formErrors.instagram ? 'border-red-400 focus:ring-red-100' : 'border-stone-200 focus:ring-rose-100'}`} placeholder="votre_compte" required />
                             </div>
                           </div>
                         </div>
                         
                         <div>
-                          <label htmlFor="phone" className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Numéro de téléphone</label>
-                          <input type="tel" id="phone" value={formData.phone} onChange={handleChange} className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all font-light" placeholder="Ex: 0555123456" maxLength={10} required />
+                          <label htmlFor="phone" className={`block text-xs uppercase tracking-widest mb-2 font-bold ${formErrors.phone ? 'text-red-500' : 'text-stone-500'}`}>Numéro de téléphone</label>
+                          <input type="tel" id="phone" value={formData.phone} onChange={handleChange} className={`w-full bg-white border rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 transition-all font-light ${formErrors.phone ? 'border-red-400 focus:ring-red-100' : 'border-stone-200 focus:ring-rose-100'}`} placeholder="Ex: 0555123456" maxLength={10} required />
                         </div>
                         
                         <div className="mb-8">
-                          <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Preuve de paiement (photo)</label>
+                          <label className={`block text-xs uppercase tracking-widest mb-2 font-bold ${formErrors.proofFile ? 'text-red-500' : 'text-stone-500'}`}>Preuve de paiement (photo)</label>
                           <div 
                             onClick={() => !previewUrl && fileInputRef.current?.click()}
                             className={`relative border-2 border-dashed rounded-2xl transition-all flex flex-col items-center justify-center p-4 cursor-pointer overflow-hidden ${
-                              previewUrl ? 'border-rose-200 bg-white h-48' : 'border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 h-32'
+                              previewUrl 
+                                ? 'border-rose-200 bg-white h-48' 
+                                : formErrors.proofFile 
+                                  ? 'border-red-300 bg-red-50/10 hover:bg-red-50 h-32'
+                                  : 'border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 h-32'
                             }`}
                           >
                             <input 
