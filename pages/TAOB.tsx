@@ -318,25 +318,27 @@ export const TAOB: React.FC = () => {
             </section>
 
             {/* Payment & Form */}
-            <section className="max-w-5xl mx-auto">
-              {status === FormStatus.SUCCESS ? (
-                <div className="min-h-[80vh] flex flex-col items-center justify-center fade-up mt-4 md:mt-8">
-                  <div className="bg-white p-12 lg:p-20 rounded-[3rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-stone-100 text-center max-w-2xl w-full flex flex-col items-center">
+            <section className="max-w-5xl mx-auto relative">
+              {/* Success Modal */}
+              {status === FormStatus.SUCCESS && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-stone-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+                  <div className="bg-white p-10 md:p-14 rounded-[3rem] shadow-2xl text-center max-w-xl w-full flex flex-col items-center animate-in zoom-in-95 duration-300">
                     <CheckCircle2 className="w-20 h-20 text-green-400 mb-6" />
                     <h2 className="text-3xl md:text-4xl font-serif mb-4 text-stone-900">Inscription Reçue !</h2>
-                    <p className="text-stone-500 mb-10 leading-relaxed max-w-md mx-auto">
+                    <p className="text-stone-500 mb-8 leading-relaxed">
                       Merci de votre confiance. Nous allons vérifier votre paiement et nous reviendrons vers vous très bientôt pour vous donner accès à la formation.
                     </p>
                     <button 
                       onClick={() => setStatus(FormStatus.IDLE)}
-                      className="bg-stone-900 text-white px-8 py-4 rounded-xl font-medium tracking-[0.2em] uppercase text-xs hover:bg-rose-400 transition-colors"
+                      className="bg-stone-900 text-white px-8 py-4 rounded-xl font-medium tracking-[0.2em] uppercase text-xs hover:bg-rose-400 transition-colors w-full"
                     >
-                      Nouvelle Inscription
+                      Fermer
                     </button>
                   </div>
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-0">
+              )}
+
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-0">
                 
                 {/* Payment Info */}
                 <div className="lg:col-span-2 bg-stone-900 text-white p-8 sm:p-10 lg:p-12 rounded-[2rem] lg:rounded-r-none relative z-10 shadow-xl fade-up">
@@ -479,7 +481,6 @@ export const TAOB: React.FC = () => {
                 </div>
 
               </div>
-              )}
             </section>
 
           </div>
