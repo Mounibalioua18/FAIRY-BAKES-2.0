@@ -21,7 +21,7 @@ export const TAOB: React.FC = () => {
   
   const [status, setStatus] = useState<FormStatus>(FormStatus.IDLE);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ name: '', instagram: '', phone: '' });
+  const [formData, setFormData] = useState({ name: '', instagram: '', phone: '0' });
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -37,7 +37,18 @@ export const TAOB: React.FC = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
+    if (e.target.id === 'phone') {
+      // Allow only numbers and force to start with '0'
+      let val = e.target.value.replace(/\D/g, '');
+      if (val.length > 0 && val[0] !== '0') {
+        val = '0' + val;
+      }
+      if (val.length <= 10) {
+        setFormData(prev => ({ ...prev, [e.target.id]: val }));
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +75,12 @@ export const TAOB: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!/^0[0-9]{9}$/.test(formData.phone)) {
+      setErrorMessage("Le numéro de téléphone doit contenir exactement 10 chiffres et commencer par un '0'.");
+      return;
+    }
+
     if (!proofFile) {
       setErrorMessage("Veuillez uploader la preuve de paiement / Capture d'écran du virement.");
       return;
@@ -103,7 +120,7 @@ export const TAOB: React.FC = () => {
       if (insertError) throw insertError;
 
       setStatus(FormStatus.SUCCESS);
-      setFormData({ name: '', instagram: '', phone: '' });
+      setFormData({ name: '', instagram: '', phone: '0' });
       setProofFile(null);
       setPreviewUrl(null);
     } catch (error: any) {
@@ -350,6 +367,11 @@ export const TAOB: React.FC = () => {
                       <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-stone-400 mb-1 md:mb-2">Nom</p>
                       <p className="text-xl md:text-2xl font-serif text-rose-200">Abid Asmaa</p>
                     </div>
+
+                    <div>
+                      <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-stone-400 mb-1 md:mb-2">Montant à transférer</p>
+                      <p className="text-xl md:text-2xl font-serif text-rose-300 bg-rose-900/40 inline-block px-4 py-2 rounded-xl border border-rose-800/50">2500 DA</p>
+                    </div>
                   </div>
 
                   <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-stone-800">
@@ -377,14 +399,17 @@ export const TAOB: React.FC = () => {
                             <input type="text" id="name" value={formData.name} onChange={handleChange} className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all font-light" placeholder="Votre nom" required />
                           </div>
                           <div>
-                            <label htmlFor="instagram" className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Instagram @</label>
-                            <input type="text" id="instagram" value={formData.instagram} onChange={handleChange} className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all font-light" placeholder="@votre_compte" required />
+                            <label htmlFor="instagram" className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Instagram Handle</label>
+                            <div className="relative">
+                              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-400 font-bold select-none">@</span>
+                              <input type="text" id="instagram" value={formData.instagram} onChange={handleChange} className="w-full bg-white border border-stone-200 rounded-xl pl-9 pr-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all font-light" placeholder="votre_compte" required />
+                            </div>
                           </div>
                         </div>
                         
                         <div>
-                          <label htmlFor="phone" className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Numéro Telegram</label>
-                          <input type="tel" id="phone" value={formData.phone} onChange={handleChange} className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all font-light" placeholder="Votre numéro" required />
+                          <label htmlFor="phone" className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Numéro de téléphone</label>
+                          <input type="tel" id="phone" value={formData.phone} onChange={handleChange} className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all font-light" placeholder="Ex: 0555123456" maxLength={10} required />
                         </div>
                         
                         <div className="mb-8">
