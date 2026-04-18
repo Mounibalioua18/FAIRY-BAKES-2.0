@@ -81,6 +81,7 @@ export const TAOB: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
     
     // Check all fields at once to show all errors
     const errors: any = {};
@@ -92,13 +93,6 @@ export const TAOB: React.FC = () => {
     setFormErrors(errors);
 
     if (Object.keys(errors).length > 0) {
-      if (errors.phone && !errors.name && !errors.instagram && !errors.proofFile) {
-        setErrorMessage("Le numéro de téléphone doit contenir exactement 10 chiffres et commencer par un '0'.");
-      } else if (errors.proofFile && !errors.name && !errors.instagram && !errors.phone) {
-        setErrorMessage("Veuillez uploader la preuve de paiement / Capture d'écran du virement.");
-      } else {
-        setErrorMessage("Veuillez remplir correctement tous les champs obligatoires mis en évidence en rouge.");
-      }
       return;
     }
 
@@ -403,16 +397,10 @@ export const TAOB: React.FC = () => {
                   <p className="text-sm md:text-base text-stone-500 font-light mb-8 md:mb-10">Remplissez ce formulaire après avoir effectué votre paiement.</p>
                   
                   <form onSubmit={handleSubmit} noValidate className="space-y-6">
-                        {status === FormStatus.ERROR && (
+                        {status === FormStatus.ERROR && errorMessage && (
                           <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
                             <AlertCircle size={18} />
                             {errorMessage}
-                          </div>
-                        )}
-                        {(Object.keys(formErrors).length > 0 && status !== FormStatus.ERROR) && (
-                           <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
-                            <AlertCircle size={18} />
-                            {errorMessage || "Veuillez remplir correctement tous les champs obligatoires."}
                           </div>
                         )}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
