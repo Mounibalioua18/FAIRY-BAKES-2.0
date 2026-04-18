@@ -2,8 +2,13 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { Link } from 'react-router-dom';
+import { PortfolioItem } from '../hooks/usePortfolio';
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  mainImage: PortfolioItem;
+}
+
+export const Hero: React.FC<HeroProps> = ({ mainImage }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
@@ -71,14 +76,15 @@ export const Hero: React.FC = () => {
         <div ref={imageContainerRef} className="lg:col-span-7 relative h-[450px] md:h-[650px] lg:h-[750px] rounded-[2.5rem] overflow-hidden shadow-2xl">
           <img 
             ref={imageRef}
-            src="https://i.imgur.com/MzxrmE9.jpg" 
-            alt="Signature Cake" 
+            src={mainImage.image_url} 
+            alt={mainImage.title} 
             className="w-full h-[115%] absolute -top-[7.5%] object-cover"
+            key={mainImage.image_url /* Force re-render of image if it changes fast enough */}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent"></div>
           <div className="absolute bottom-10 left-10 text-white">
-            <p className="hero-fade-in text-xs uppercase tracking-[0.2em] font-medium opacity-80">Featured Art</p>
-            <h3 className="hero-fade-in text-3xl font-serif">Midnight Navy Ruffle</h3>
+            <p className="hero-fade-in text-xs uppercase tracking-[0.2em] font-medium opacity-80">{mainImage.description || 'Featured Art'}</p>
+            <h3 className="hero-fade-in text-3xl font-serif">{mainImage.title || 'Midnight Navy Ruffle'}</h3>
           </div>
         </div>
       </div>

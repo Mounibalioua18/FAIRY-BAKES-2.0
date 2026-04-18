@@ -1,17 +1,13 @@
 
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { PortfolioItem } from '../hooks/usePortfolio';
 
-const CAKES = [
-  { id: 1, title: 'Cottage Matcha Meadow', category: 'Fairy Garden', url: 'https://i.imgur.com/GIUiWhP.jpg' }, 
-  { id: 2, title: 'Alabaster Petal Muse', category: 'Ethereal', url: 'https://i.imgur.com/hACqPgb.jpg' }, 
-  { id: 3, title: 'Floral Tapestry', category: 'Botanical', url: 'https://i.imgur.com/J2xDhBS.jpg' }, 
-  { id: 4, title: 'Rosewood Enchantment', category: 'Vintage', url: 'https://i.imgur.com/d7K5223.jpg' },
-  { id: 5, title: 'Celestial Silk Tier', category: 'Grand Celebration', url: 'https://i.imgur.com/HPUKF0h.jpg' },
-  { id: 6, title: 'Ethereal Garden Whispers', category: 'Artisan Signature', url: 'https://i.imgur.com/oRCMA8X.jpg' },
-];
+interface GalleryProps {
+  galleryImages: PortfolioItem[];
+}
 
-export const Gallery: React.FC = () => {
+export const Gallery: React.FC<GalleryProps> = ({ galleryImages }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,18 +42,18 @@ export const Gallery: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {CAKES.map((cake) => (
+          {galleryImages.map((cake) => (
             <div key={cake.id} className="gallery-item group cursor-pointer overflow-hidden rounded-3xl relative shadow-sm hover:shadow-2xl transition-shadow duration-700">
               <div className="aspect-[4/5] overflow-hidden">
                 <img 
-                  src={cake.url} 
+                  src={cake.image_url} 
                   alt={cake.title}
                   className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                 />
               </div>
               <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/60 transition-all duration-700 flex flex-col items-center justify-end p-10">
                 <div className="text-center opacity-0 group-hover:opacity-100 transform translate-y-10 group-hover:translate-y-0 transition-all duration-700 text-white">
-                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold mb-3 block text-rose-200">{cake.category}</span>
+                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold mb-3 block text-rose-200">{cake.description}</span>
                   <h3 className="text-2xl md:text-3xl font-serif mb-4">{cake.title}</h3>
                   <div className="h-px w-10 bg-white/30 mx-auto"></div>
                 </div>

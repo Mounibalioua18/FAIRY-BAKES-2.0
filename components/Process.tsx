@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { Calendar, Heart, Palette } from 'lucide-react';
+import { PortfolioItem } from '../hooks/usePortfolio';
 
 const STEPS = [
   {
@@ -21,7 +22,11 @@ const STEPS = [
   }
 ];
 
-export const Process: React.FC = () => {
+interface ProcessProps {
+  processImages: PortfolioItem[];
+}
+
+export const Process: React.FC<ProcessProps> = ({ processImages }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -67,14 +72,14 @@ export const Process: React.FC = () => {
           <div className="relative">
             <div className="grid grid-cols-2 gap-4">
               <img 
-                src="https://i.imgur.com/JEliXn0.jpg" 
+                src={processImages[0]?.image_url || "https://i.imgur.com/JEliXn0.jpg"} 
                 className="process-image rounded-2xl shadow-2xl mt-12 w-full aspect-[3/4] object-cover"
-                alt="Artisan cake preparation"
+                alt={processImages[0]?.title || "Artisan cake preparation"}
               />
               <img 
-                src="https://i.imgur.com/RFffE8J.jpg" 
+                src={processImages[1]?.image_url || "https://i.imgur.com/RFffE8J.jpg"} 
                 className="process-image rounded-2xl shadow-2xl w-full aspect-[3/4] object-cover"
-                alt="Detailed cake decoration"
+                alt={processImages[1]?.title || "Detailed cake decoration"}
               />
             </div>
             {/* Soft decorative glow background */}

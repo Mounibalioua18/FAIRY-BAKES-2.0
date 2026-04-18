@@ -9,11 +9,13 @@ import { Process } from '../components/Process';
 import { OrderForm } from '../components/OrderForm';
 import { Footer } from '../components/Footer';
 import { ScrollToTop } from '../components/ScrollToTop';
+import { usePortfolio } from '../hooks/usePortfolio';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const Home: React.FC = () => {
   const mainRef = useRef<HTMLDivElement>(null);
+  const { mainImage, galleryImages, processImages } = usePortfolio();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -67,10 +69,10 @@ export const Home: React.FC = () => {
       <div className="relative z-10">
         <Navbar />
         <main>
-          <Hero />
-          <Gallery />
+          <Hero mainImage={mainImage} />
+          <Gallery galleryImages={galleryImages} />
           <Menu />
-          <Process />
+          <Process processImages={processImages} />
           <OrderForm />
         </main>
         <Footer />
