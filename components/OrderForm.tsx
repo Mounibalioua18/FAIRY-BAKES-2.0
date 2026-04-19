@@ -281,7 +281,7 @@ export const OrderForm: React.FC = () => {
                     className={`w-full bg-white border rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 transition-all ${formErrors.phoneNumber ? 'border-red-400 focus:ring-red-100' : 'border-stone-200 focus:ring-rose-100'}`}
                   />
                   {formErrors.phoneNumber && (
-                    <p className="text-red-500 text-[10px] mt-1.5 uppercase font-medium tracking-wide">10 chiffres, commençant par 0</p>
+                    <p className="text-red-500 text-[10px] mt-1.5 uppercase font-medium tracking-wide">Le numéro est faux</p>
                   )}
                 </div>
               </div>
