@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Send, CheckCircle2, AlertCircle, Info, Upload, X } from 'lucide-react';
 import { FormStatus, CakeOrder } from '../types';
@@ -9,8 +8,29 @@ export const OrderForm: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
+  // Fetch form status setting
+  React.useEffect(() => {
+    const fetchFormStatus = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('portfolio')
+          .select('description')
+          .eq('title', 'SYSTEM_SETTING_ORDER_FORM')
+          .single();
+        
+        if (data && data.description === 'false') {
+          setIsFormOpen(false);
+        }
+      } catch (err) {
+        console.log('Using default form setting');
+      }
+    };
+    fetchFormStatus();
+  }, []);
+
   // Calculate next month's boundaries
   const now = new Date();
   const nextMonthDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
@@ -193,7 +213,21 @@ export const OrderForm: React.FC = () => {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="bg-stone-50 p-8 md:p-12 rounded-[2.5rem] shadow-sm border border-stone-100">
+          <form onSubmit={handleSubmit} className="bg-stone-50 p-8 md:p-12 rounded-[2.5rem] shadow-sm border border-stone-100 relative overflow-hidden">
+            {!isFormOpen && (
+              <div className="absolute inset-0 z-10 backdrop-blur-md bg-stone-50/80 flex flex-col items-center justify-center p-8 text-center border border-stone-200/50 rounded-[2.5rem]">
+                <div className="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-rose-100">
+                  <AlertCircle className="text-rose-400" size={32} />
+                </div>
+                <h3 className="text-2xl font-serif text-stone-900 mb-4">Les commandes sont fermées</h3>
+                <p className="text-stone-600 leading-relaxed max-w-sm mx-auto">
+                  Les commandes ouvriront vers la fin du mois. Gardez un œil sur notre Instagram pour être informé(e) !
+                </p>
+              </div>
+            )}
+            
+            <div className={`transition-opacity duration-300 ${!isFormOpen ? 'opacity-30 blur-sm pointer-events-none' : ''}`}>
+              <fieldset disabled={!isFormOpen} className="w-full">
             {status === FormStatus.ERROR && (
               <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
                 <AlertCircle size={18} />
@@ -319,7 +353,7 @@ export const OrderForm: React.FC = () => {
                     <button 
                       type="button"
                       onClick={(e) => { e.stopPropagation(); removeImage(); }}
-                      className="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-full shadow-lg hover:bg-rose-600 transition-colors"
+                      className="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-full shadow-lg hover:bg-rose-600 transition-colors z-20"
                     >
                       <X size={14} />
                     </button>
@@ -337,7 +371,7 @@ export const OrderForm: React.FC = () => {
             </div>
 
             <button 
-              disabled={status === FormStatus.SUBMITTING}
+              disabled={status === FormStatus.SUBMITTING || !isFormOpen}
               type="submit" 
               className="w-full bg-rose-400 text-white rounded-full py-4 uppercase tracking-[0.2em] text-sm font-semibold hover:bg-rose-500 transition-all shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -354,6 +388,8 @@ export const OrderForm: React.FC = () => {
               )}
             </button>
             <p className="mt-4 text-[10px] text-center text-stone-400 uppercase tracking-widest">Livraison sur Alger Uniquement • 50% d'Acompte Requis</p>
+            </fieldset>
+            </div>
           </form>
         </div>
       </div>
