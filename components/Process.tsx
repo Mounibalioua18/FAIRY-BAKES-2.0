@@ -7,18 +7,18 @@ import { PortfolioItem } from '../hooks/usePortfolio';
 const STEPS = [
   {
     icon: Calendar,
-    title: 'Monthly Selection',
-    description: 'Orders open towards the end of each month for the upcoming month. Slots are limited to ensure artful precision.'
+    title: 'Sélection Mensuelle',
+    description: 'Les commandes ouvrent vers la fin de chaque mois pour le mois suivant. Les places sont limitées pour garantir une précision artistique optimale.'
   },
   {
     icon: Palette,
-    title: 'The Design Consultation',
-    description: 'We discuss your vision, color palettes, and floral preferences to create a truly one-of-a-kind center-piece.'
+    title: 'Consultation Personnalisée',
+    description: 'Nous discutons de votre vision, de vos palettes de couleurs et de vos préférences florales pour créer une pièce maîtresse véritablement unique.'
   },
   {
     icon: Heart,
-    title: 'Handcrafted With Love',
-    description: 'Premium ingredients sourced locally and prepared fresh. Our signature buttercream is light, silky, and balanced.'
+    title: 'Confectionné avec Amour',
+    description: 'Des ingrédients de première qualité préparés frais. Notre crème au beurre signature est légère, soyeuse et équilibrée.'
   }
 ];
 
@@ -53,8 +53,8 @@ export const Process: React.FC<ProcessProps> = ({ processImages }) => {
       <div className="max-w-7xl mx-auto" ref={containerRef}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
-            <span className="text-rose-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4 block">The Fairy Way</span>
-            <h2 className="text-4xl md:text-5xl font-serif text-stone-900 mb-12">How We Fairy Bake</h2>
+            <span className="text-rose-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4 block">La Méthode Fairy</span>
+            <h2 className="text-4xl md:text-5xl font-serif text-stone-900 mb-12">Notre Processus de Création</h2>
             <div className="space-y-12">
               {STEPS.map((step, index) => (
                 <div key={index} className="process-step flex gap-6">
@@ -72,12 +72,12 @@ export const Process: React.FC<ProcessProps> = ({ processImages }) => {
           <div className="relative">
             <div className="grid grid-cols-2 gap-4">
               <img 
-                src={processImages[0]?.image_url || "https://i.imgur.com/JEliXn0.jpg"} 
+                src={processImages[0]?.image_url || ""} 
                 className="process-image rounded-2xl shadow-2xl mt-12 w-full aspect-[3/4] object-cover"
                 alt={processImages[0]?.title || "Artisan cake preparation"}
               />
               <img 
-                src={processImages[1]?.image_url || "https://i.imgur.com/RFffE8J.jpg"} 
+                src={processImages[1]?.image_url || ""} 
                 className="process-image rounded-2xl shadow-2xl w-full aspect-[3/4] object-cover"
                 alt={processImages[1]?.title || "Detailed cake decoration"}
               />

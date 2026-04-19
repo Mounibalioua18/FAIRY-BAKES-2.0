@@ -147,49 +147,48 @@ export const OrderForm: React.FC = () => {
     }
   };
 
-  if (status === FormStatus.SUCCESS) {
-    return (
-      <section id="order" className="min-h-[80vh] flex flex-col items-center justify-center px-6 md:px-12 bg-white text-center scroll-mt-24">
-        <div className="max-w-2xl w-full mx-auto p-12 lg:p-20 bg-white rounded-[3rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-stone-100 flex flex-col items-center">
-          <CheckCircle2 className="w-20 h-20 text-green-400 mb-6" />
-          <h2 className="text-3xl md:text-4xl font-serif mb-4 text-stone-900">Commande Reçue !</h2>
-          <p className="text-stone-500 mb-10 leading-relaxed max-w-md mx-auto">
-            Thank you for trusting Fairy Bakes. We will reach out via Instagram within 48 hours to confirm your {monthName} slot and discuss final details.
-          </p>
-          <button 
-            onClick={() => setStatus(FormStatus.IDLE)}
-            className="bg-stone-900 text-white px-8 py-4 rounded-xl font-medium tracking-[0.2em] uppercase text-xs hover:bg-rose-400 transition-colors"
-          >
-            Submit another order
-          </button>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section id="order" className="py-24 px-6 md:px-12 bg-white scroll-mt-24">
+    <section id="order" className="py-24 px-6 md:px-12 bg-white scroll-mt-24 relative">
+      {/* Success Modal */}
+      {status === FormStatus.SUCCESS && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-stone-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+          <div className="bg-white p-10 md:p-14 rounded-[3rem] shadow-2xl text-center max-w-xl w-full flex flex-col items-center animate-in zoom-in-95 duration-300">
+            <CheckCircle2 className="w-20 h-20 text-green-400 mb-6" />
+            <h2 className="text-3xl md:text-4xl font-serif mb-4 text-stone-900">Commande Reçue !</h2>
+            <p className="text-stone-500 mb-8 leading-relaxed">
+              Merci de votre confiance. Nous vous contacterons via Instagram sous 48 heures pour confirmer votre créneau pour {monthName} et discuter des détails.
+            </p>
+            <button 
+              onClick={() => setStatus(FormStatus.IDLE)}
+              className="bg-stone-900 text-white px-8 py-4 rounded-xl font-medium tracking-[0.2em] uppercase text-xs hover:bg-rose-400 transition-colors w-full"
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div>
-            <h2 className="text-4xl md:text-6xl font-serif text-stone-900 mb-6">Reservation Window</h2>
+            <h2 className="text-4xl md:text-6xl font-serif text-stone-900 mb-6">Créneaux de Réservation</h2>
             <div className="inline-flex items-center space-x-2 bg-stone-900 text-white px-4 py-2 rounded-full text-xs uppercase tracking-widest mb-8">
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-              <span>Accepting Orders for {monthName} {year}</span>
+              <span>Commandes ouvertes pour {monthName} {year}</span>
             </div>
             <p className="text-stone-500 text-lg mb-8 leading-relaxed font-light">
-              We gather orders once a month. This ensures we can source the freshest seasonal florals and plan each design meticulously.
+              Nous recueillons les commandes une fois par mois. Cela nous permet de sélectionner les fleurs de saison les plus fraîches et de planifier méticuleusement chaque design.
             </p>
             <div className="space-y-6">
               <div className="flex items-start space-x-4 p-6 bg-rose-50 rounded-2xl border border-rose-100">
                 <AlertCircle className="text-rose-400 flex-shrink-0" size={24} />
                 <p className="text-sm text-stone-600 leading-relaxed italic">
-                  Note: A 50% deposit via Baridimob or CCP is required within 48h to secure your date. Dates are reserved on a first-to-pay basis.
+                  Note : Un acompte de 50% via Baridimob ou CCP est requis sous 48h pour bloquer votre date. Premier payé, premier servi.
                 </p>
               </div>
               <div className="flex items-start space-x-4 p-4">
                 <Info className="text-stone-300 flex-shrink-0" size={20} />
-                <p className="text-xs text-stone-400">Delivery is available in Algiers (Alger) only.</p>
+                <p className="text-xs text-stone-400">La livraison est disponible uniquement à Alger.</p>
               </div>
             </div>
           </div>
@@ -204,19 +203,19 @@ export const OrderForm: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Name</label>
+                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Nom</label>
                 <input 
                   required
                   type="text" 
                   name="customerName"
                   value={formData.customerName}
                   onChange={handleChange}
-                  placeholder="Your Name"
+                  placeholder="Votre Nom"
                   className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
                 />
               </div>
               <div>
-                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Phone</label>
+                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Téléphone</label>
                 <input 
                   required
                   type="tel" 
@@ -230,7 +229,7 @@ export const OrderForm: React.FC = () => {
             </div>
 
             <div className="mb-6">
-              <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Instagram Handle</label>
+              <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Compte Instagram</label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-400 font-bold select-none">@</span>
                 <input 
@@ -239,7 +238,7 @@ export const OrderForm: React.FC = () => {
                   name="instagramHandle"
                   value={formData.instagramHandle}
                   onChange={handleChange}
-                  placeholder="username"
+                  placeholder="votre_compte"
                   className="w-full bg-white border border-stone-200 rounded-xl pl-9 pr-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
                 />
               </div>
@@ -248,8 +247,8 @@ export const OrderForm: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <label className="block text-xs uppercase tracking-widest text-stone-500 font-bold">Event Date</label>
-                  <span className="text-[10px] text-rose-400 font-semibold uppercase">{monthName} Only</span>
+                  <label className="block text-xs uppercase tracking-widest text-stone-500 font-bold">Date de l'événement</label>
+                  <span className="text-[10px] text-rose-400 font-semibold uppercase">{monthName} Uniquement</span>
                 </div>
                 <div className="relative">
                   <input 
@@ -267,23 +266,23 @@ export const OrderForm: React.FC = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Size</label>
+                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Taille</label>
                 <select 
                   name="cakeSize"
                   value={formData.cakeSize}
                   onChange={handleChange}
                   className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all appearance-none cursor-pointer"
                 >
-                  <option value="12cm">12cm (Small)</option>
+                  <option value="12cm">12cm (Petit)</option>
                   <option value="15cm">15cm (Standard)</option>
-                  <option value="20cm">20cm (Large)</option>
-                  <option value="custom">Custom (Wedding/Engagement)</option>
+                  <option value="20cm">20cm (Grand)</option>
+                  <option value="custom">Sur mesure (Mariage/Fiançailles)</option>
                 </select>
               </div>
             </div>
 
             <div className="mb-6">
-              <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Flavor Preference</label>
+              <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Saveur</label>
               <select 
                 name="flavor"
                 value={formData.flavor}
@@ -294,7 +293,7 @@ export const OrderForm: React.FC = () => {
                 <option value="Chocolat">Chocolat</option>
                 <option value="Vanille Fraise">Vanille Fraise</option>
                 <option value="Pistache Framboise">Pistache Framboise</option>
-                <option value="Other">Other (Discuss later)</option>
+                <option value="Other">Autre (À discuter)</option>
               </select>
             </div>
 
@@ -330,8 +329,8 @@ export const OrderForm: React.FC = () => {
                     <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-2">
                       <Upload size={20} />
                     </div>
-                    <p className="text-[11px] text-stone-400 uppercase tracking-widest font-semibold text-center px-4">upload your inspiration</p>
-                    <p className="text-[9px] text-stone-300 mt-1">JPEG, PNG up to 50MB</p>
+                    <p className="text-[11px] text-stone-400 uppercase tracking-widest font-semibold text-center px-4">joindre votre image</p>
+                    <p className="text-[9px] text-stone-300 mt-1">JPEG, PNG jusqu'à 50MB</p>
                   </>
                 )}
               </div>
@@ -345,16 +344,16 @@ export const OrderForm: React.FC = () => {
               {status === FormStatus.SUBMITTING ? (
                 <span className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  Sending Order...
+                  Envoi de la Commande...
                 </span>
               ) : (
                 <>
-                  <span>Pre-Order for {monthName}</span>
+                  <span>Pré-commander pour {monthName}</span>
                   <Send size={16} />
                 </>
               )}
             </button>
-            <p className="mt-4 text-[10px] text-center text-stone-400 uppercase tracking-widest">Algiers Delivery Only • 50% Deposit Required</p>
+            <p className="mt-4 text-[10px] text-center text-stone-400 uppercase tracking-widest">Livraison sur Alger Uniquement • 50% d'Acompte Requis</p>
           </form>
         </div>
       </div>

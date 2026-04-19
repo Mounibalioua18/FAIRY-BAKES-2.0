@@ -30,7 +30,7 @@ export const Navbar: React.FC = () => {
         >
           TAOB
         </Link>
-        <Link to="/#order" className="hover:text-rose-400 transition-all hover:tracking-[0.4em]">Reserve your date</Link>
+        <Link to="/#order" className="hover:text-rose-400 transition-all hover:tracking-[0.4em]">Réserver votre date</Link>
       </div>
     </nav>
   );

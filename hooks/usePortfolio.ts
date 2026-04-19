@@ -15,28 +15,28 @@ const DEFAULT_MAIN: PortfolioItem = {
   type: 'main',
   title: 'Midnight Navy Ruffle',
   description: 'Featured Art',
-  image_url: 'https://i.imgur.com/MzxrmE9.jpg',
+  image_url: '',
   position: 0
 };
 
 const DEFAULT_GALLERY: PortfolioItem[] = [
-  { id: '1', title: 'Cottage Matcha Meadow', description: 'Fairy Garden', image_url: 'https://i.imgur.com/GIUiWhP.jpg', type: 'gallery', position: 1 }, 
-  { id: '2', title: 'Alabaster Petal Muse', description: 'Ethereal', image_url: 'https://i.imgur.com/hACqPgb.jpg', type: 'gallery', position: 2 }, 
-  { id: '3', title: 'Floral Tapestry', description: 'Botanical', image_url: 'https://i.imgur.com/J2xDhBS.jpg', type: 'gallery', position: 3 }, 
-  { id: '4', title: 'Rosewood Enchantment', description: 'Vintage', image_url: 'https://i.imgur.com/d7K5223.jpg', type: 'gallery', position: 4 },
-  { id: '5', title: 'Celestial Silk Tier', description: 'Grand Celebration', image_url: 'https://i.imgur.com/HPUKF0h.jpg', type: 'gallery', position: 5 },
-  { id: '6', title: 'Ethereal Garden Whispers', description: 'Artisan Signature', image_url: 'https://i.imgur.com/oRCMA8X.jpg', type: 'gallery', position: 6 },
+  { id: '1', title: 'Cottage Matcha Meadow', description: 'Fairy Garden', image_url: '', type: 'gallery', position: 1 }, 
+  { id: '2', title: 'Alabaster Petal Muse', description: 'Ethereal', image_url: '', type: 'gallery', position: 2 }, 
+  { id: '3', title: 'Floral Tapestry', description: 'Botanical', image_url: '', type: 'gallery', position: 3 }, 
+  { id: '4', title: 'Rosewood Enchantment', description: 'Vintage', image_url: '', type: 'gallery', position: 4 },
+  { id: '5', title: 'Celestial Silk Tier', description: 'Grand Celebration', image_url: '', type: 'gallery', position: 5 },
+  { id: '6', title: 'Ethereal Garden Whispers', description: 'Artisan Signature', image_url: '', type: 'gallery', position: 6 },
 ];
 
 const DEFAULT_PROCESS: PortfolioItem[] = [
-  { id: '7', title: 'Process 1', description: '', image_url: 'https://i.imgur.com/JEliXn0.jpg', type: 'gallery', position: 7 },
-  { id: '8', title: 'Process 2', description: '', image_url: 'https://i.imgur.com/RFffE8J.jpg', type: 'gallery', position: 8 }
+  { id: '7', title: 'Process 1', description: '', image_url: '', type: 'gallery', position: 7 },
+  { id: '8', title: 'Process 2', description: '', image_url: '', type: 'gallery', position: 8 }
 ];
 
 const DEFAULT_TAOB: PortfolioItem[] = [
-  { id: '9', title: 'TAOB Apercu 1', description: '', image_url: 'https://i.imgur.com/7ozYAqY.jpeg', type: 'gallery', position: 9 },
-  { id: '10', title: 'TAOB Apercu 2', description: '', image_url: 'https://i.imgur.com/IhgOril.jpeg', type: 'gallery', position: 10 },
-  { id: '11', title: 'TAOB Apercu 3', description: '', image_url: 'https://i.imgur.com/H3gOYlk.mp4', type: 'gallery', position: 11 }
+  { id: '9', title: 'TAOB Apercu 1', description: '', image_url: '', type: 'gallery', position: 9 },
+  { id: '10', title: 'TAOB Apercu 2', description: '', image_url: '', type: 'gallery', position: 10 },
+  { id: '11', title: 'TAOB Apercu 3', description: '', image_url: '', type: 'gallery', position: 11 }
 ];
 
 export function usePortfolio() {

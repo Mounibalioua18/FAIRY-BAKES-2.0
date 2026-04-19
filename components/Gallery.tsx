@@ -33,11 +33,11 @@ export const Gallery: React.FC<GalleryProps> = ({ galleryImages }) => {
     <section id="gallery" className="py-24 bg-white px-6 md:px-12">
       <div className="max-w-7xl mx-auto" ref={containerRef}>
         <div className="text-center mb-16">
-          <span className="font-signature text-3xl text-rose-300 block mb-2">curated</span>
-          <h2 className="text-4xl md:text-6xl font-serif text-stone-900 mb-6">The Fairies' Garden</h2>
+          <span className="font-signature text-3xl text-rose-300 block mb-2">sélection</span>
+          <h2 className="text-4xl md:text-6xl font-serif text-stone-900 mb-6">Le Jardin des Fairies</h2>
           <div className="h-px w-24 bg-stone-200 mx-auto"></div>
           <p className="mt-8 text-stone-500 max-w-xl mx-auto font-light leading-relaxed text-lg">
-            Every creation is bespoke, handcrafted with attention to the most delicate textures and seasonal color palettes.
+            Chaque création est sur mesure, confectionnée à la main avec une attention particulière aux textures délicates et aux palettes de couleurs de saison.
           </p>
         </div>
         

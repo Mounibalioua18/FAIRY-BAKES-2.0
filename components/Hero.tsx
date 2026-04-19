@@ -52,22 +52,22 @@ export const Hero: React.FC<HeroProps> = ({ mainImage }) => {
         {/* Text content - Appears first for mobile */}
         <div ref={contentRef} className="lg:col-span-5 z-10">
           <span className="hero-fade-in inline-block text-rose-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">
-            Algiers Artisan Cakes
+            Gâteaux Artisanaux d'Alger
           </span>
           <h1 ref={titleRef} className="text-5xl md:text-7xl lg:text-8xl font-serif leading-tight text-stone-900 mb-6">
-            Edible Art <br />
-            <span className="italic font-normal text-stone-600">for your</span> <br />
-            Special Moments
+            L'Art Comestible <br />
+            <span className="italic font-normal text-stone-600">pour vos</span> <br />
+            Moments Uniques
           </h1>
           <p className="hero-fade-in text-stone-500 text-lg md:text-xl max-w-md leading-relaxed mb-10 font-light">
-            We transform flour and sugar into whimsical, floral masterpieces. Each cake is a unique story told in layers of luxury.
+            Nous transformons la farine et le sucre en chefs-d'œuvre floraux et féeriques. Chaque gâteau est une histoire unique racontée à travers des strates de gourmandise.
           </p>
           <div className="hero-fade-in flex flex-col sm:flex-row gap-4 mb-10 lg:mb-0">
             <a href="/#order" className="bg-rose-100 text-rose-800 px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:bg-rose-200 transition-all text-center shadow-sm">
-              Reserve Your Date
+              Réserver Votre Date
             </a>
             <Link to="/taob" className="border border-stone-200 text-stone-600 px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:bg-stone-50 transition-all text-center">
-              sign up to TAOB
+              Rejoindre TAOB
             </Link>
           </div>
         </div>
@@ -83,7 +83,7 @@ export const Hero: React.FC<HeroProps> = ({ mainImage }) => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent"></div>
           <div className="absolute bottom-10 left-10 text-white">
-            <p className="hero-fade-in text-xs uppercase tracking-[0.2em] font-medium opacity-80">{mainImage.description || 'Featured Art'}</p>
+            <p className="hero-fade-in text-xs uppercase tracking-[0.2em] font-medium opacity-80">{mainImage.description || 'À la Une'}</p>
             <h3 className="hero-fade-in text-3xl font-serif">{mainImage.title || 'Midnight Navy Ruffle'}</h3>
           </div>
         </div>

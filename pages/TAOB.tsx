@@ -345,6 +345,11 @@ export const TAOB: React.FC = () => {
                   <h2 className="text-2xl md:text-3xl font-serif mb-8 md:mb-10 text-rose-100">Paiement</h2>
                   
                   <div className="space-y-6 md:space-y-8">
+                    <div>
+                      <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-stone-400 mb-1 md:mb-2">Montant à transférer</p>
+                      <p className="text-xl md:text-2xl font-serif text-rose-300 bg-rose-900/40 inline-block px-4 py-2 rounded-xl border border-rose-800/50">2500 DA</p>
+                    </div>
+
                     <div 
                       className="group cursor-pointer"
                       onClick={() => handleCopy('00799999002594505475', 'baridi')}
@@ -378,11 +383,6 @@ export const TAOB: React.FC = () => {
                     <div>
                       <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-stone-400 mb-1 md:mb-2">Nom</p>
                       <p className="text-xl md:text-2xl font-serif text-rose-200">Abid Asmaa</p>
-                    </div>
-
-                    <div>
-                      <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-stone-400 mb-1 md:mb-2">Montant à transférer</p>
-                      <p className="text-xl md:text-2xl font-serif text-rose-300 bg-rose-900/40 inline-block px-4 py-2 rounded-xl border border-rose-800/50">2500 DA</p>
                     </div>
                   </div>
 
