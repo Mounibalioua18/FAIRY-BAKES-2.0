@@ -192,10 +192,10 @@ export const OrderForm: React.FC = () => {
   };
 
   return (
-    <section id="order" className="py-24 px-6 md:px-12 bg-white scroll-mt-24 relative">
+    <>
       {/* Success Modal */}
       {status === FormStatus.SUCCESS && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-stone-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-stone-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-300" style={{position: 'fixed'}}>
           <div className="bg-white p-10 md:p-14 rounded-[3rem] shadow-2xl text-center max-w-xl w-full flex flex-col items-center animate-in zoom-in-95 duration-300">
             <CheckCircle2 className="w-20 h-20 text-green-400 mb-6" />
             <h2 className="text-3xl md:text-4xl font-serif mb-4 text-stone-900">Commande Reçue !</h2>
@@ -212,8 +212,9 @@ export const OrderForm: React.FC = () => {
         </div>
       )}
 
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <section id="order" className="py-24 px-6 md:px-12 bg-white scroll-mt-24 relative">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div>
             <h2 className="text-4xl md:text-6xl font-serif text-stone-900 mb-6">Créneaux de Réservation</h2>
             <div className="inline-flex items-center space-x-2 bg-stone-900 text-white px-4 py-2 rounded-full text-xs uppercase tracking-widest mb-8">
@@ -414,8 +415,9 @@ export const OrderForm: React.FC = () => {
               <p className="mt-4 text-[10px] text-center text-stone-400 uppercase tracking-widest">Livraison sur Alger Uniquement • 50% d'Acompte Requis</p>
             </form>
           )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
