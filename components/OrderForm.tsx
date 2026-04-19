@@ -193,8 +193,8 @@ export const OrderForm: React.FC = () => {
           <div>
             <h2 className="text-4xl md:text-6xl font-serif text-stone-900 mb-6">Créneaux de Réservation</h2>
             <div className="inline-flex items-center space-x-2 bg-stone-900 text-white px-4 py-2 rounded-full text-xs uppercase tracking-widest mb-8">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-              <span>Commandes ouvertes pour {monthName} {year}</span>
+              <span className={`w-2 h-2 rounded-full ${isFormOpen ? 'bg-green-400 animate-pulse' : 'bg-red-500'}`}></span>
+              <span>{isFormOpen ? `Commandes ouvertes pour ${monthName} ${year}` : 'Commandes fermées'}</span>
             </div>
             <p className="text-stone-500 text-lg mb-8 leading-relaxed font-light">
               Nous recueillons les commandes une fois par mois. Cela nous permet de sélectionner les fleurs de saison les plus fraîches et de planifier méticuleusement chaque design.
