@@ -60,7 +60,7 @@ export const Hero: React.FC<HeroProps> = ({ mainImage }) => {
             Moments Uniques
           </h1>
           <p className="hero-fade-in text-stone-500 text-lg md:text-xl max-w-md leading-relaxed mb-10 font-light">
-            Nous transformons la farine et le sucre en chefs-d'œuvre floraux et féeriques. Chaque gâteau est une histoire unique racontée à travers des strates de gourmandise.
+            Nous transformons la farine et le sucre en chefs-d'œuvre floraux et féeriques. Chaque gâteau est une histoire unique racontée à travers des strates de gourmandise. Vous souhaitez maîtriser notre art ? Découvrez notre formation exclusive <strong className="font-medium text-stone-800">TAOB</strong>.
           </p>
           <div className="hero-fade-in flex flex-col sm:flex-row gap-4 mb-10 lg:mb-0">
             <a href="/#order" className="bg-rose-100 text-rose-800 px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:bg-rose-200 transition-all text-center shadow-sm">

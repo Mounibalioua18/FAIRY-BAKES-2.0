@@ -213,184 +213,180 @@ export const OrderForm: React.FC = () => {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="bg-stone-50 p-8 md:p-12 rounded-[2.5rem] shadow-sm border border-stone-100 relative overflow-hidden">
-            {!isFormOpen && (
-              <div className="absolute inset-0 z-10 backdrop-blur-md bg-stone-50/80 flex flex-col items-center justify-center p-8 text-center border border-stone-200/50 rounded-[2.5rem]">
-                <div className="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-rose-100">
-                  <AlertCircle className="text-rose-400" size={32} />
-                </div>
-                <h3 className="text-2xl font-serif text-stone-900 mb-4">Les commandes sont fermées</h3>
-                <p className="text-stone-600 leading-relaxed max-w-sm mx-auto">
-                  Les commandes ouvriront vers la fin du mois. Gardez un œil sur notre Instagram pour être informé(e) !
-                </p>
+          {!isFormOpen ? (
+            <div className="bg-stone-50 p-8 md:p-12 rounded-[2.5rem] shadow-sm border border-stone-100 flex flex-col items-center justify-center text-center h-full">
+              <div className="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-rose-100">
+                <AlertCircle className="text-rose-400" size={32} />
               </div>
-            )}
-            
-            <div className={`transition-opacity duration-300 ${!isFormOpen ? 'opacity-30 blur-sm pointer-events-none' : ''}`}>
-              <fieldset disabled={!isFormOpen} className="w-full">
-            {status === FormStatus.ERROR && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
-                <AlertCircle size={18} />
-                {errorMessage}
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Nom</label>
-                <input 
-                  required
-                  type="text" 
-                  name="customerName"
-                  value={formData.customerName}
-                  onChange={handleChange}
-                  placeholder="Votre Nom"
-                  className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
-                />
-              </div>
-              <div>
-                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Téléphone</label>
-                <input 
-                  required
-                  type="tel" 
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                  placeholder="0..."
-                  className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
-                />
-              </div>
+              <h3 className="text-2xl font-serif text-stone-900 mb-4">Les commandes sont fermées</h3>
+              <p className="text-stone-600 leading-relaxed max-w-sm mx-auto">
+                Les commandes ouvriront vers la fin du mois. Gardez un œil sur notre Instagram pour être informé(e) !
+              </p>
             </div>
-
-            <div className="mb-6">
-              <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Compte Instagram</label>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-400 font-bold select-none">@</span>
-                <input 
-                  required
-                  type="text" 
-                  name="instagramHandle"
-                  value={formData.instagramHandle}
-                  onChange={handleChange}
-                  placeholder="votre_compte"
-                  className="w-full bg-white border border-stone-200 rounded-xl pl-9 pr-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div className="flex flex-col justify-end h-full">
-                <div className="flex justify-between items-end mb-2 gap-2 mt-auto">
-                  <label className="block text-xs uppercase tracking-widest text-stone-500 font-bold leading-tight pb-0.5">Date de l'événement</label>
-                  <span className="text-[9px] sm:text-[10px] text-rose-400 font-semibold uppercase text-right leading-tight pb-0.5 whitespace-nowrap">{monthName} Uniquement</span>
+          ) : (
+            <form onSubmit={handleSubmit} className="bg-stone-50 p-8 md:p-12 rounded-[2.5rem] shadow-sm border border-stone-100 relative overflow-hidden">
+              {status === FormStatus.ERROR && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
+                  <AlertCircle size={18} />
+                  {errorMessage}
                 </div>
-                <div className="relative">
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Nom</label>
                   <input 
                     required
-                    type="date" 
-                    name="eventDate"
-                    min={minDate}
-                    max={maxDate}
-                    value={formData.eventDate}
+                    type="text" 
+                    name="customerName"
+                    value={formData.customerName}
                     onChange={handleChange}
-                    onClick={handleDateClick}
-                    onKeyDown={(e) => e.preventDefault()}
-                    className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all cursor-pointer hover:border-rose-300"
+                    placeholder="Votre Nom"
+                    className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Téléphone</label>
+                  <input 
+                    required
+                    type="tel" 
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    placeholder="0..."
+                    className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
                   />
                 </div>
               </div>
-              <div className="flex flex-col justify-end h-full">
-                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold leading-tight mt-auto pb-0.5">Taille</label>
+
+              <div className="mb-6">
+                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Compte Instagram</label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-400 font-bold select-none">@</span>
+                  <input 
+                    required
+                    type="text" 
+                    name="instagramHandle"
+                    value={formData.instagramHandle}
+                    onChange={handleChange}
+                    placeholder="votre_compte"
+                    className="w-full bg-white border border-stone-200 rounded-xl pl-9 pr-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="flex flex-col justify-end h-full">
+                  <div className="flex justify-between items-end mb-2 gap-2 mt-auto">
+                    <label className="block text-xs uppercase tracking-widest text-stone-500 font-bold leading-tight pb-0.5">Date de l'événement</label>
+                    <span className="text-[9px] sm:text-[10px] text-rose-400 font-semibold uppercase text-right leading-tight pb-0.5 whitespace-nowrap">{monthName} Uniquement</span>
+                  </div>
+                  <div className="relative">
+                    <input 
+                      required
+                      type="date" 
+                      name="eventDate"
+                      min={minDate}
+                      max={maxDate}
+                      value={formData.eventDate}
+                      onChange={handleChange}
+                      onClick={handleDateClick}
+                      onKeyDown={(e) => e.preventDefault()}
+                      className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all cursor-pointer hover:border-rose-300"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col justify-end h-full">
+                  <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold leading-tight mt-auto pb-0.5">Taille</label>
+                  <select 
+                    name="cakeSize"
+                    value={formData.cakeSize}
+                    onChange={handleChange}
+                    className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all appearance-none cursor-pointer"
+                  >
+                    <option value="12cm">12cm (Petit)</option>
+                    <option value="15cm">15cm (Standard)</option>
+                    <option value="20cm">20cm (Grand)</option>
+                    <option value="custom">Sur mesure (Mariage/Fiançailles)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Saveur</label>
                 <select 
-                  name="cakeSize"
-                  value={formData.cakeSize}
+                  name="flavor"
+                  value={formData.flavor}
                   onChange={handleChange}
                   className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all appearance-none cursor-pointer"
                 >
-                  <option value="12cm">12cm (Petit)</option>
-                  <option value="15cm">15cm (Standard)</option>
-                  <option value="20cm">20cm (Grand)</option>
-                  <option value="custom">Sur mesure (Mariage/Fiançailles)</option>
+                  <option value="Vanille">Vanille</option>
+                  <option value="Chocolat">Chocolat</option>
+                  <option value="Vanille Fraise">Vanille Fraise</option>
+                  <option value="Pistache Framboise">Pistache Framboise</option>
+                  <option value="Other">Autre (À discuter)</option>
                 </select>
               </div>
-            </div>
 
-            <div className="mb-6">
-              <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Saveur</label>
-              <select 
-                name="flavor"
-                value={formData.flavor}
-                onChange={handleChange}
-                className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all appearance-none cursor-pointer"
-              >
-                <option value="Vanille">Vanille</option>
-                <option value="Chocolat">Chocolat</option>
-                <option value="Vanille Fraise">Vanille Fraise</option>
-                <option value="Pistache Framboise">Pistache Framboise</option>
-                <option value="Other">Autre (À discuter)</option>
-              </select>
-            </div>
+              <div className="mb-8">
+                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Inspiration</label>
+                <div 
+                  onClick={() => !previewUrl && fileInputRef.current?.click()}
+                  className={`relative border-2 border-dashed rounded-2xl transition-all flex flex-col items-center justify-center p-4 cursor-pointer overflow-hidden ${
+                    previewUrl ? 'border-rose-200 bg-white h-48' : 'border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 h-32'
+                  }`}
+                >
+                  <input 
+                    type="file" 
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  
+                  {previewUrl ? (
+                    <div className="relative w-full h-full group">
+                      <img src={previewUrl} alt="Preview" className="w-full h-full object-contain rounded-lg" />
+                      <button 
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); removeImage(); }}
+                        className="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-full shadow-lg hover:bg-rose-600 transition-colors z-20"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-2">
+                        <Upload size={20} />
+                      </div>
+                      <p className="text-[11px] text-stone-400 uppercase tracking-widest font-semibold text-center px-4">joindre votre image</p>
+                      <p className="text-[9px] text-stone-300 mt-1">JPEG, PNG jusqu'à 50MB</p>
+                    </>
+                  )}
+                </div>
+              </div>
 
-            <div className="mb-8">
-              <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Inspiration</label>
-              <div 
-                onClick={() => !previewUrl && fileInputRef.current?.click()}
-                className={`relative border-2 border-dashed rounded-2xl transition-all flex flex-col items-center justify-center p-4 cursor-pointer overflow-hidden ${
-                  previewUrl ? 'border-rose-200 bg-white h-48' : 'border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 h-32'
-                }`}
+              <button 
+                disabled={status === FormStatus.SUBMITTING}
+                type="submit" 
+                className="w-full bg-rose-400 text-white rounded-full py-4 uppercase tracking-[0.2em] text-sm font-semibold hover:bg-rose-500 transition-all shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <input 
-                  type="file" 
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  accept="image/*"
-                  className="hidden"
-                />
-                
-                {previewUrl ? (
-                  <div className="relative w-full h-full group">
-                    <img src={previewUrl} alt="Preview" className="w-full h-full object-contain rounded-lg" />
-                    <button 
-                      type="button"
-                      onClick={(e) => { e.stopPropagation(); removeImage(); }}
-                      className="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-full shadow-lg hover:bg-rose-600 transition-colors z-20"
-                    >
-                      <X size={14} />
-                    </button>
-                  </div>
+                {status === FormStatus.SUBMITTING ? (
+                  <span className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Envoi de la Commande...
+                  </span>
                 ) : (
                   <>
-                    <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-2">
-                      <Upload size={20} />
-                    </div>
-                    <p className="text-[11px] text-stone-400 uppercase tracking-widest font-semibold text-center px-4">joindre votre image</p>
-                    <p className="text-[9px] text-stone-300 mt-1">JPEG, PNG jusqu'à 50MB</p>
+                    <span>Pré-commander pour {monthName}</span>
+                    <Send size={16} />
                   </>
                 )}
-              </div>
-            </div>
-
-            <button 
-              disabled={status === FormStatus.SUBMITTING || !isFormOpen}
-              type="submit" 
-              className="w-full bg-rose-400 text-white rounded-full py-4 uppercase tracking-[0.2em] text-sm font-semibold hover:bg-rose-500 transition-all shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {status === FormStatus.SUBMITTING ? (
-                <span className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  Envoi de la Commande...
-                </span>
-              ) : (
-                <>
-                  <span>Pré-commander pour {monthName}</span>
-                  <Send size={16} />
-                </>
-              )}
-            </button>
-            <p className="mt-4 text-[10px] text-center text-stone-400 uppercase tracking-widest">Livraison sur Alger Uniquement • 50% d'Acompte Requis</p>
-            </fieldset>
-            </div>
-          </form>
+              </button>
+              <p className="mt-4 text-[10px] text-center text-stone-400 uppercase tracking-widest">Livraison sur Alger Uniquement • 50% d'Acompte Requis</p>
+            </form>
+          )}
         </div>
       </div>
     </section>
