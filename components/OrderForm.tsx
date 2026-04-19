@@ -245,10 +245,10 @@ export const OrderForm: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="block text-xs uppercase tracking-widest text-stone-500 font-bold">Date de l'événement</label>
-                  <span className="text-[10px] text-rose-400 font-semibold uppercase">{monthName} Uniquement</span>
+              <div className="flex flex-col justify-end h-full">
+                <div className="flex justify-between items-end mb-2 gap-2 mt-auto">
+                  <label className="block text-xs uppercase tracking-widest text-stone-500 font-bold leading-tight pb-0.5">Date de l'événement</label>
+                  <span className="text-[9px] sm:text-[10px] text-rose-400 font-semibold uppercase text-right leading-tight pb-0.5 whitespace-nowrap">{monthName} Uniquement</span>
                 </div>
                 <div className="relative">
                   <input 
@@ -265,8 +265,8 @@ export const OrderForm: React.FC = () => {
                   />
                 </div>
               </div>
-              <div>
-                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Taille</label>
+              <div className="flex flex-col justify-end h-full">
+                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold leading-tight mt-auto pb-0.5">Taille</label>
                 <select 
                   name="cakeSize"
                   value={formData.cakeSize}
