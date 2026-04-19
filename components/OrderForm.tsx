@@ -9,6 +9,7 @@ export const OrderForm: React.FC = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(true);
+  const [formErrors, setFormErrors] = useState<{phoneNumber?: boolean}>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Fetch form status setting
@@ -44,7 +45,7 @@ export const OrderForm: React.FC = () => {
 
   const [formData, setFormData] = useState<CakeOrder>({
     customerName: '',
-    phoneNumber: '',
+    phoneNumber: '0',
     instagramHandle: '',
     eventDate: minDate,
     cakeSize: '15cm',
@@ -54,8 +55,18 @@ export const OrderForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus(FormStatus.SUBMITTING);
     setErrorMessage(null);
+
+    const errors: any = {};
+    if (!/^0[0-9]{9}$/.test(formData.phoneNumber)) errors.phoneNumber = true;
+
+    setFormErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
+    setStatus(FormStatus.SUBMITTING);
 
     try {
       let finalFileUrl: string | null = null;
@@ -116,7 +127,7 @@ export const OrderForm: React.FC = () => {
       setSelectedFile(null);
       setFormData({
         customerName: '',
-        phoneNumber: '',
+        phoneNumber: '0',
         instagramHandle: '',
         eventDate: minDate,
         cakeSize: '15cm',
@@ -132,7 +143,20 @@ export const OrderForm: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    if (name === 'phoneNumber') setFormErrors(prev => ({ ...prev, phoneNumber: false }));
+
+    if (name === 'phoneNumber') {
+      let val = value.replace(/\D/g, '');
+      if (val.length > 0 && val[0] !== '0') {
+        val = '0' + val;
+      }
+      if (val.length <= 10) {
+        setFormData(prev => ({ ...prev, [name]: val }));
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -246,16 +270,19 @@ export const OrderForm: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Téléphone</label>
+                  <label className={`block text-xs uppercase tracking-widest mb-2 font-bold ${formErrors.phoneNumber ? 'text-red-500' : 'text-stone-500'}`}>Téléphone</label>
                   <input 
                     required
                     type="tel" 
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleChange}
-                    placeholder="0..."
-                    className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
+                    maxLength={10}
+                    className={`w-full bg-white border rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 transition-all ${formErrors.phoneNumber ? 'border-red-400 focus:ring-red-100' : 'border-stone-200 focus:ring-rose-100'}`}
                   />
+                  {formErrors.phoneNumber && (
+                    <p className="text-red-500 text-[10px] mt-1.5 uppercase font-medium tracking-wide">10 chiffres, commençant par 0</p>
+                  )}
                 </div>
               </div>
 
