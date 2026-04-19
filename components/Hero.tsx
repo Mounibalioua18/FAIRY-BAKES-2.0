@@ -55,7 +55,7 @@ export const Hero: React.FC<HeroProps> = ({ mainImage }) => {
             Gâteaux Artisanaux d'Alger
           </span>
           <h1 ref={titleRef} className="text-5xl md:text-7xl lg:text-8xl font-serif leading-tight text-stone-900 mb-6">
-            L'Art Comestible <br />
+            L'Art Gourmand <br />
             <span className="italic font-normal text-stone-600">pour vos</span> <br />
             Moments Uniques
           </h1>
