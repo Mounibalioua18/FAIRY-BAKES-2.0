@@ -417,9 +417,6 @@ export const TAOB: React.FC = () => {
                   <h3 className="text-xl md:text-2xl font-serif text-stone-900 mb-8 md:mb-12 border-b border-stone-200 pb-4 text-center md:text-left">Chapitres vidéo</h3>
                   
                   <div className="relative space-y-4 md:space-y-6">
-                    {/* Vertical connecting line */}
-                    <div className="hidden md:block absolute left-[2.4rem] top-8 bottom-8 w-px bg-rose-200/50"></div>
-                    
                     {[
                       { title: "Introduction", desc: "Petite présentation du contenu et aperçu global de la formation." },
                       { title: "Pourquoi la crème au beurre à la meringue suisse ?", desc: "On va voir les différents types de crèmes et pourquoi la crème au beurre à la meringue suisse est la plus adaptée pour la couverture des layer cakes." },
@@ -429,18 +426,13 @@ export const TAOB: React.FC = () => {
                       { title: "Conservation de la crème au beurre", desc: "Règles de conservation, congélation et décongélation pour préserver une texture parfaite." },
                       { title: "Troubleshooting (résolution des problèmes)", desc: "Causes + solutions aux problèmes les plus fréquents avec la crème au beurre." }
                     ].map((item, index) => (
-                      <div key={index} className="relative md:pl-24 group transition-all duration-300 hover:-translate-y-1">
-                        {/* Floating Indicator (hidden on mobile, using inline on mobile) */}
-                        <div className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border-2 border-rose-100 items-center justify-center shadow-sm group-hover:border-rose-300 group-hover:shadow-md transition-all duration-300 z-10">
-                          <span className="font-serif text-xl text-stone-400 group-hover:text-rose-500 transition-colors">{index + 1}</span>
-                        </div>
-                        
+                      <div key={index} className="relative group transition-all duration-300 hover:-translate-y-1">
                         {/* Content Card */}
                         <div className="bg-white/60 backdrop-blur-sm border border-stone-200/50 p-6 md:p-8 rounded-[2rem] shadow-sm group-hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.06)] group-hover:border-rose-100 transition-all duration-500 relative overflow-hidden">
                           <div className="absolute top-0 left-0 w-1.5 h-full bg-rose-200 origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-out"></div>
                           <div className="flex flex-col">
-                            <div className="flex items-center gap-3 mb-2 md:mb-3">
-                              <span className="md:hidden font-serif text-lg text-rose-400 font-semibold">{String(index + 1).padStart(2, '0')}</span>
+                            <div className="flex items-center gap-3 lg:gap-4 mb-2 md:mb-3">
+                              <span className="font-serif text-lg md:text-2xl text-rose-400 font-semibold">{String(index + 1).padStart(2, '0')}</span>
                               <h4 className="text-lg md:text-xl font-serif text-stone-800 leading-snug">{item.title}</h4>
                             </div>
                             <p className="text-sm md:text-base font-light text-stone-500 leading-relaxed max-w-2xl">{item.desc}</p>
