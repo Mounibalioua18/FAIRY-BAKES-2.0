@@ -73,7 +73,7 @@ export const Hero: React.FC<HeroProps> = ({ mainImage }) => {
         </div>
 
         {/* Image content - Appears under text on mobile, on right on desktop */}
-        <div ref={imageContainerRef} className="lg:col-span-7 relative h-[450px] md:h-[650px] lg:h-[750px] rounded-[2.5rem] overflow-hidden shadow-2xl">
+        <div ref={imageContainerRef} className="lg:col-span-7 relative h-[450px] md:h-[650px] lg:h-[750px] rounded-[2.5rem] overflow-hidden shadow-sm">
           <img 
             ref={imageRef}
             src={mainImage.image_url} 

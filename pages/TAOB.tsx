@@ -341,7 +341,7 @@ export const TAOB: React.FC = () => {
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-0">
                 
                 {/* Payment Info */}
-                <div className="lg:col-span-2 bg-stone-900 text-white p-8 sm:p-10 lg:p-12 rounded-[2rem] lg:rounded-r-none relative z-10 shadow-xl fade-up">
+                <div className="lg:col-span-2 bg-stone-900 text-white p-8 sm:p-10 lg:p-12 rounded-[2rem] lg:rounded-r-none relative z-10 shadow-sm fade-up">
                   <h2 className="text-2xl md:text-3xl font-serif mb-8 md:mb-10 text-rose-100">Paiement</h2>
                   
                   <div className="space-y-6 md:space-y-8">
@@ -394,7 +394,7 @@ export const TAOB: React.FC = () => {
                 </div>
 
                 {/* Form */}
-                <div className="lg:col-span-3 bg-white p-8 sm:p-10 lg:p-16 rounded-[2rem] lg:rounded-l-none border border-stone-100 shadow-xl lg:-ml-4 fade-up">
+                <div className="lg:col-span-3 bg-white p-8 sm:p-10 lg:p-16 rounded-[2rem] lg:rounded-l-none border border-stone-100 shadow-sm lg:-ml-4 fade-up">
                   <h2 className="text-2xl md:text-3xl font-serif text-stone-900 mb-2">Rejoindre la formation</h2>
                   <p className="text-sm md:text-base text-stone-500 font-light mb-8 md:mb-10">Remplissez ce formulaire après avoir effectué votre paiement.</p>
                   
