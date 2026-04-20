@@ -449,27 +449,30 @@ export const TAOB: React.FC = () => {
                     ))}
                   </div>
 
-                  {/* Mobile 3D Page Turn View */}
+                  {/* Mobile Stacked Vertical Swipe View */}
                   <div className="sm:hidden relative w-full px-6 mx-auto mt-6 mb-8 fade-up flex flex-col items-center">
+                    
+                    {/* Badge indicating total pages */}
+                    <div className="bg-stone-100 text-stone-500 text-xs font-medium tracking-widest uppercase px-4 py-1.5 rounded-full mb-6 border border-stone-200">
+                      Page {pdfFlipped ? '2' : '1'} sur 2
+                    </div>
+
                     <div 
-                      className="relative w-full max-w-[320px] aspect-[4/5] cursor-pointer touch-pan-y"
-                      style={{ perspective: '2000px' }}
-                      onTouchStart={(e) => setPdfTouchStartX(e.touches[0].clientX)}
+                      className="relative w-full max-w-[320px] aspect-[4/5] cursor-pointer touch-pan-x"
+                      onTouchStart={(e) => setPdfTouchStartX(e.touches[0].clientY)}
                       onTouchEnd={(e) => {
-                        const touchEndX = e.changedTouches[0].clientX;
-                        if (pdfTouchStartX - touchEndX > 50) setPdfFlipped(true); // Swipe Left (Turn to next)
-                        if (touchEndX - pdfTouchStartX > 50) setPdfFlipped(false); // Swipe Right (Turn back)
+                        const touchEndY = e.changedTouches[0].clientY;
+                        if (pdfTouchStartX - touchEndY > 40) setPdfFlipped(true); // Swipe Up
+                        if (touchEndY - pdfTouchStartX > 40) setPdfFlipped(false); // Swipe Down
                       }}
                       onClick={() => setPdfFlipped(!pdfFlipped)}
                     >
                       {/* Fake pages thickness behind the book */}
-                      <div className="absolute inset-0 bg-[#e6e2dd] border border-stone-200/50 rounded-r-[1.5rem] rounded-l-sm transform translate-x-[4px] translate-y-[4px]"></div>
-                      <div className="absolute inset-0 bg-[#f4f0ea] border border-stone-200/50 rounded-r-[1.5rem] rounded-l-sm transform translate-x-[2px] translate-y-[2px]"></div>
+                      <div className="absolute inset-x-4 -bottom-3 h-6 bg-[#e6e2dd] border border-stone-200/50 rounded-b-[1.5rem]"></div>
+                      <div className="absolute inset-x-2 -bottom-1.5 h-6 bg-[#f4f0ea] border border-stone-200/50 rounded-b-[1.5rem]"></div>
 
-                      {/* Page 2 (Bottom Page - Revealed when turned) */}
-                      <div className="absolute inset-0 bg-[#fefcfb] rounded-r-[1.5rem] rounded-l-sm shadow-sm border border-stone-200/80 overflow-hidden flex items-center justify-center">
-                        <div className="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-stone-300/40 via-stone-200/10 to-transparent z-10 pointer-events-none mix-blend-multiply"></div>
-                        <div className="absolute inset-y-0 left-0 w-px bg-stone-300/50 z-10"></div>
+                      {/* Page 2 (Bottom Page - Revealed when swiped up) */}
+                      <div className="absolute inset-0 bg-[#fefcfb] rounded-[1.5rem] shadow-sm border border-stone-200/80 overflow-hidden flex items-center justify-center transition-all duration-500">
                         {taobPdfImages[1]?.image_url ? (
                           <img src={taobPdfImages[1].image_url} alt="Aperçu PDF 2" className="w-full h-full object-contain p-3" referrerPolicy="no-referrer" />
                         ) : (
@@ -477,23 +480,11 @@ export const TAOB: React.FC = () => {
                         )}
                       </div>
 
-                      {/* Page 1 (Top Page - Flippable) */}
+                      {/* Page 1 (Top Page - Swipes Up) */}
                       <div 
-                        className="absolute inset-0 bg-[#fefcfb] rounded-r-[1.5rem] rounded-l-sm shadow-md border border-stone-200/80 overflow-hidden origin-left flex items-center justify-center transition-all duration-[800ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
-                        style={{ 
-                          transform: pdfFlipped ? 'rotateY(-180deg)' : 'rotateY(0deg)',
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden',
-                          transformStyle: 'preserve-3d'
-                        }}
+                        className={`absolute inset-0 bg-[#fefcfb] rounded-[1.5rem] shadow-md border border-stone-200/80 overflow-hidden flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
+                          ${pdfFlipped ? '-translate-y-[105%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}
                       >
-                        {/* Shadow simulating spine */}
-                        <div className="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-stone-300/40 via-stone-200/10 to-transparent z-10 pointer-events-none mix-blend-multiply"></div>
-                        <div className="absolute inset-y-0 left-0 w-px bg-stone-300/50 z-10"></div>
-                        
-                        {/* Page curl effect hint (bottom right corner) */}
-                        {!pdfFlipped && <div className="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-black/5 to-transparent z-10 rounded-br-[1.5rem] pointer-events-none"></div>}
-
                         {taobPdfImages[0]?.image_url ? (
                           <img src={taobPdfImages[0].image_url} alt="Aperçu PDF 1" className="w-full h-full object-contain p-3" referrerPolicy="no-referrer" />
                         ) : (
@@ -502,10 +493,12 @@ export const TAOB: React.FC = () => {
                       </div>
                     </div>
 
-                    <p className="text-[11px] text-stone-400 font-medium mt-10 tracking-widest uppercase flex items-center gap-3">
-                      <span className="w-4 h-px bg-stone-300"></span>
-                      Tourner la page
-                      <span className="w-4 h-px bg-stone-300"></span>
+                    <p className="text-[11px] text-stone-400 font-medium mt-10 tracking-widest uppercase flex flex-col items-center gap-1">
+                      <span className="flex items-center gap-3">
+                        <span className="w-4 h-px bg-stone-300"></span>
+                        Glisser vers le {pdfFlipped ? 'bas' : 'haut'}
+                        <span className="w-4 h-px bg-stone-300"></span>
+                      </span>
                     </p>
                   </div>
                 </>
