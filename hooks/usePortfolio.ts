@@ -39,6 +39,11 @@ const DEFAULT_TAOB: PortfolioItem[] = [
   { id: '11', title: 'TAOB Apercu 3', description: '', image_url: '', type: 'gallery', position: 11 }
 ];
 
+const DEFAULT_TAOB_PDF: PortfolioItem[] = [
+  { id: '12', title: 'TAOB PDF 1', description: '', image_url: '', type: 'gallery', position: 12 },
+  { id: '13', title: 'TAOB PDF 2', description: '', image_url: '', type: 'gallery', position: 13 }
+];
+
 export function usePortfolio() {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -88,11 +93,16 @@ export function usePortfolio() {
     return DEFAULT_TAOB.map((fallback, index) => getDbImage('gallery', index + 9, fallback));
   };
 
+  const getTaobPdfImages = () => {
+    return DEFAULT_TAOB_PDF.map((fallback, index) => getDbImage('gallery', index + 12, fallback));
+  };
+
   return { 
     mainImage: getMainImage(), 
     galleryImages: getGalleryImages(), 
     processImages: getProcessImages(), 
     taobImages: getTaobImages(),
+    taobPdfImages: getTaobPdfImages(),
     loading 
   };
 }

@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const TAOB: React.FC = () => {
   const mainRef = useRef<HTMLDivElement>(null);
-  const { taobImages } = usePortfolio();
+  const { taobImages, taobPdfImages } = usePortfolio();
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [copiedBaridi, setCopiedBaridi] = useState(false);
@@ -407,17 +407,43 @@ export const TAOB: React.FC = () => {
               </div>
             </div>
 
-            {/* Aperçu de la formation (Placeholder for PDF) */}
-            <section id="apercu-formation" className="max-w-4xl mx-auto scroll-mt-32">
+            {/* Aperçu de la formation (PDF Preview) */}
+            <section id="apercu-formation" className="max-w-5xl mx-auto scroll-mt-32">
               <div className="text-center mb-8 md:mb-12 fade-up px-4">
                 <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-4">Aperçu de la formation</h2>
                 <p className="text-stone-500 font-light">Découvrez le contenu du livret PDF exclusif</p>
               </div>
-              <div className="w-full bg-white/40 border-2 border-stone-200/60 border-dashed rounded-[2rem] p-12 text-center fade-up flex flex-col items-center justify-center min-h-[350px]">
-                <BookOpen size={48} className="text-stone-300 mb-6" />
-                <h3 className="text-lg font-serif text-stone-600 mb-2">Espace réservé au Guide PDF</h3>
-                <p className="text-stone-400 font-light text-sm max-w-md mx-auto">C'est ici que s'afficheront les images du magnifique livret PDF accompagnant la formation.</p>
-              </div>
+              
+              {taobPdfImages && taobPdfImages.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 px-4 md:px-0 fade-up">
+                  {taobPdfImages.map((image, index) => (
+                    <div 
+                      key={image.id || index}
+                      className="rounded-[2rem] overflow-hidden shadow-sm hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.08)] transition-shadow duration-500 bg-white/40 border border-stone-200/50"
+                    >
+                      {image.image_url ? (
+                        <img 
+                          src={image.image_url} 
+                          alt={`Aperçu PDF ${index + 1}`} 
+                          className="w-full h-auto object-cover hover:scale-105 transition-transform duration-1000 ease-out" 
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="w-full aspect-[3/4] bg-stone-100/50 flex flex-col items-center justify-center text-stone-400">
+                          <BookOpen size={32} className="mb-4 opacity-50" />
+                          <span className="text-sm font-light">Image non disponible</span>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="w-full bg-white/40 border-2 border-stone-200/60 border-dashed rounded-[2rem] p-12 text-center fade-up flex flex-col items-center justify-center min-h-[350px]">
+                  <BookOpen size={48} className="text-stone-300 mb-6" />
+                  <h3 className="text-lg font-serif text-stone-600 mb-2">Espace réservé au Guide PDF</h3>
+                  <p className="text-stone-400 font-light text-sm max-w-md mx-auto">C'est ici que s'afficheront les images du magnifique livret PDF accompagnant la formation.</p>
+                </div>
+              )}
             </section>
 
             {/* What you will learn */}
