@@ -200,6 +200,76 @@ export const TAOB: React.FC = () => {
           scrub: true
         }
       });
+
+      // Gallery entrance exactly like the first page but far more dramatic (to be more noticeable!)
+      if (carouselRef.current) {
+        const taobGalleryItems = gsap.utils.toArray('.taob-gallery-item');
+        gsap.fromTo(taobGalleryItems, 
+          { opacity: 0, y: 150, scale: 0.85, rotation: 3 },
+          { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1,
+            rotation: 0,
+            duration: 1.6,
+            ease: 'back.out(1.2)',
+            stagger: 0.15,
+            scrollTrigger: {
+              trigger: carouselRef.current,
+              start: 'top 75%',
+            }
+          }
+        );
+
+        // Mobile Controls Animation tied to scroll
+        gsap.fromTo('.taob-nav-left',
+          { x: -50, opacity: 0 },
+          { 
+            x: 0, 
+            opacity: 1, 
+            duration: 1, 
+            ease: 'back.out(1.5)', 
+            scrollTrigger: {
+              trigger: carouselRef.current,
+              start: 'top 70%',
+              end: 'center center',
+              scrub: 1
+            }
+          }
+        );
+
+        gsap.fromTo('.taob-nav-right',
+          { x: 50, opacity: 0 },
+          { 
+            x: 0, 
+            opacity: 1, 
+            duration: 1, 
+            ease: 'back.out(1.5)', 
+            scrollTrigger: {
+              trigger: carouselRef.current,
+              start: 'top 70%',
+              end: 'center center',
+              scrub: 1
+            }
+          }
+        );
+
+        gsap.fromTo('.taob-nav-dots',
+          { y: 30, opacity: 0 },
+          { 
+            y: 0, 
+            opacity: 1, 
+            duration: 1, 
+            ease: 'back.out(1.5)', 
+            scrollTrigger: {
+              trigger: carouselRef.current,
+              start: 'top 70%',
+              end: 'center center',
+              scrub: 1
+            }
+          }
+        );
+      }
     }, mainRef);
     return () => ctx.revert();
   }, []);
@@ -289,7 +359,7 @@ export const TAOB: React.FC = () => {
                     return (
                       <div 
                         key={image.id || index} 
-                        className={`fade-up rounded-[2rem] shadow-sm overflow-hidden ${placementClasses}`}
+                        className={`taob-gallery-item rounded-[2rem] shadow-sm overflow-hidden ${placementClasses}`}
                       >
                         {image?.image_url?.match(/\.(mp4|webm)$/i) ? (
                           <video src={image.image_url} autoPlay loop muted playsInline className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" />
@@ -303,15 +373,15 @@ export const TAOB: React.FC = () => {
                 
                 {/* Mobile indicators & arrows */}
                 {taobImages.length > 1 && (
-                  <div className="md:hidden flex items-center justify-center gap-4 mb-4 mt-2">
+                  <div className="md:hidden flex items-center justify-center gap-4 mb-4 mt-2 px-6">
                     <button 
                       onClick={() => scrollToIndex(Math.max(0, activeSlide - 1))}
                       disabled={activeSlide === 0}
-                      className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-stone-400 disabled:opacity-30 disabled:cursor-not-allowed hover:text-stone-800 transition-colors"
+                      className="taob-nav-left w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-stone-400 disabled:opacity-30 disabled:cursor-not-allowed hover:text-stone-800 transition-colors"
                     >
                       <ChevronLeft size={20} />
                     </button>
-                    <div className="flex gap-2">
+                    <div className="taob-nav-dots flex gap-2">
                       {taobImages.map((_, idx) => (
                         <button 
                           key={idx}
@@ -324,7 +394,7 @@ export const TAOB: React.FC = () => {
                     <button 
                       onClick={() => scrollToIndex(Math.min(taobImages.length - 1, activeSlide + 1))}
                       disabled={activeSlide === taobImages.length - 1}
-                      className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-stone-400 disabled:opacity-30 disabled:cursor-not-allowed hover:text-stone-800 transition-colors"
+                      className="taob-nav-right w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-stone-400 disabled:opacity-30 disabled:cursor-not-allowed hover:text-stone-800 transition-colors"
                     >
                       <ChevronRight size={20} />
                     </button>
