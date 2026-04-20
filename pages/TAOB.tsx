@@ -303,37 +303,8 @@ export const TAOB: React.FC = () => {
 
           <div className="space-y-20 md:space-y-32 text-stone-700">
             
-            {/* Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-              <div className="text-center space-y-4 fade-up">
-                <div className="w-16 h-16 mx-auto rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-6">
-                  <Play size={24} />
-                </div>
-                <h3 className="font-serif text-xl text-stone-900">Vidéos Détaillées</h3>
-                <p className="font-light text-stone-500 text-sm leading-relaxed">Des explications claires et détaillées pour maîtriser chaque geste.</p>
-              </div>
-              <div className="text-center space-y-4 fade-up">
-                <div className="w-16 h-16 mx-auto rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-6">
-                  <BookOpen size={24} />
-                </div>
-                <h3 className="font-serif text-xl text-stone-900">Guide PDF</h3>
-                <p className="font-light text-stone-500 text-sm leading-relaxed">Un support écrit complet que vous pouvez consulter à tout moment.</p>
-              </div>
-              <div className="text-center space-y-4 fade-up">
-                <div className="w-16 h-16 mx-auto rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-6">
-                  <Infinity size={24} />
-                </div>
-                <h3 className="font-serif text-xl text-stone-900">Accès Illimité</h3>
-                <p className="font-light text-stone-500 text-sm leading-relaxed">Profitez de la formation à vie et à votre propre rythme.</p>
-              </div>
-            </div>
-
-            {/* Aperçu Gallery */}
-            <section className="max-w-5xl mx-auto mt-16 md:mt-24">
-              <div className="text-center mb-8 md:mb-12 fade-up px-4">
-                <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-4">Aperçu de la formation</h2>
-                <p className="text-stone-500 font-light">Faites glisser pour découvrir ce qui vous attend</p>
-              </div>
+            {/* Gallery moved right below header */}
+            <section className="max-w-5xl mx-auto pt-4 md:pt-8 mt-12 md:mt-16">
               <div className="relative max-w-5xl mx-auto md:pb-28">
                 {/* 
                   Mobile: Flex container with horizontal scroll and snapping 
@@ -345,8 +316,6 @@ export const TAOB: React.FC = () => {
                   className="flex md:grid md:grid-cols-3 gap-6 md:gap-8 overflow-x-auto snap-x snap-mandatory px-6 md:px-4 pb-4 pt-4 md:pt-0 md:pb-0 md:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                 >
                   {taobImages.map((image, index) => {
-                    // All images are strictly the same size (aspect-[4/5] on mobile, aspect-[3/4] on PC)
-                    // We only apply vertical translation on PC to create the "staircase" effect
                     let placementClasses = 'w-[80vw] sm:w-[60vw] md:w-auto shrink-0 snap-center snap-always aspect-[4/5] md:aspect-[3/4]';
                     if (index === 0) {
                       placementClasses += ' md:translate-y-24';
@@ -405,8 +374,54 @@ export const TAOB: React.FC = () => {
               </div>
             </section>
 
+            {/* Clickable Features Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 pt-8">
+              <button 
+                onClick={(e) => { e.preventDefault(); document.getElementById('chapitres-video')?.scrollIntoView({ behavior: 'smooth' }); }}
+                className="group text-center space-y-4 fade-up cursor-pointer hover:-translate-y-1 transition-transform duration-300"
+              >
+                <div className="w-16 h-16 mx-auto rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-6 group-hover:bg-rose-100 group-hover:text-rose-500 transition-colors shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-rose-100/50">
+                  <Play size={24} className="ml-1" />
+                </div>
+                <h3 className="font-serif text-xl text-stone-900 group-hover:text-rose-500 transition-colors">Vidéos Détaillées</h3>
+                <p className="font-light text-stone-500 text-sm leading-relaxed">Des explications claires et détaillées pour maîtriser chaque geste.</p>
+              </button>
+              
+              <button 
+                onClick={(e) => { e.preventDefault(); document.getElementById('apercu-formation')?.scrollIntoView({ behavior: 'smooth' }); }}
+                className="group text-center space-y-4 fade-up cursor-pointer hover:-translate-y-1 transition-transform duration-300"
+              >
+                <div className="w-16 h-16 mx-auto rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-6 group-hover:bg-rose-100 group-hover:text-rose-500 transition-colors shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-rose-100/50">
+                  <BookOpen size={24} />
+                </div>
+                <h3 className="font-serif text-xl text-stone-900 group-hover:text-rose-500 transition-colors">Guide PDF</h3>
+                <p className="font-light text-stone-500 text-sm leading-relaxed">Un support écrit complet que vous pouvez consulter à tout moment.</p>
+              </button>
+              
+              <div className="text-center space-y-4 fade-up">
+                <div className="w-16 h-16 mx-auto rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-6">
+                  <Infinity size={24} />
+                </div>
+                <h3 className="font-serif text-xl text-stone-900">Accès Illimité</h3>
+                <p className="font-light text-stone-500 text-sm leading-relaxed">Profitez de la formation à vie et à votre propre rythme.</p>
+              </div>
+            </div>
+
+            {/* Aperçu de la formation (Placeholder for PDF) */}
+            <section id="apercu-formation" className="max-w-4xl mx-auto scroll-mt-32">
+              <div className="text-center mb-8 md:mb-12 fade-up px-4">
+                <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-4">Aperçu de la formation</h2>
+                <p className="text-stone-500 font-light">Découvrez le contenu du livret PDF exclusif</p>
+              </div>
+              <div className="w-full bg-white/40 border-2 border-stone-200/60 border-dashed rounded-[2rem] p-12 text-center fade-up flex flex-col items-center justify-center min-h-[350px]">
+                <BookOpen size={48} className="text-stone-300 mb-6" />
+                <h3 className="text-lg font-serif text-stone-600 mb-2">Espace réservé au Guide PDF</h3>
+                <p className="text-stone-400 font-light text-sm max-w-md mx-auto">C'est ici que s'afficheront les images du magnifique livret PDF accompagnant la formation.</p>
+              </div>
+            </section>
+
             {/* What you will learn */}
-            <section className="max-w-4xl mx-auto">
+            <section id="chapitres-video" className="max-w-4xl mx-auto scroll-mt-32">
               <div className="text-center mb-12 fade-up">
                 <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-4">Le Programme</h2>
                 <p className="text-stone-500 font-light">Tout ce que vous allez apprendre dans cette formation</p>
