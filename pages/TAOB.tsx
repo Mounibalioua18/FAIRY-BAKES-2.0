@@ -288,10 +288,10 @@ export const TAOB: React.FC = () => {
       <div className="relative z-10">
         <Navbar />
         
-        <main className="pt-28 md:pt-48 pb-32 px-6 md:px-12 max-w-6xl mx-auto">
+        <main className="pt-40 md:pt-48 pb-32 px-6 md:px-12 max-w-6xl mx-auto">
           
           {/* Header Section */}
-          <div className="text-center mb-8 md:mb-24 fade-up">
+          <div className="text-center mb-12 md:mb-24 fade-up">
             <h1 className="flex flex-col items-center justify-center mb-4 md:mb-8">
               <span className="font-serif text-rose-400 text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide relative z-10">The Art Of</span>
               <span className="font-signature text-rose-400 text-6xl sm:text-8xl md:text-[10rem] leading-none -mt-4 sm:-mt-6 md:-mt-8 relative z-0">Buttercream</span>
@@ -308,7 +308,7 @@ export const TAOB: React.FC = () => {
           <div className="space-y-16 md:space-y-32 text-stone-700">
             
             {/* Gallery moved right below header */}
-            <section className="max-w-5xl mx-auto pt-0 md:pt-8 mt-2 md:mt-16">
+            <section className="max-w-5xl mx-auto pt-0 md:pt-8 mt-8 md:mt-16">
               <div className="relative max-w-5xl mx-auto md:pb-28">
                 {/* 
                   Mobile: Flex container with horizontal scroll and snapping 
