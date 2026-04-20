@@ -222,38 +222,6 @@ export const TAOB: React.FC = () => {
         );
 
         // Mobile Controls Animation tied to scroll
-        gsap.fromTo('.taob-nav-left',
-          { x: -50, opacity: 0 },
-          { 
-            x: 0, 
-            opacity: 1, 
-            duration: 1, 
-            ease: 'back.out(1.5)', 
-            scrollTrigger: {
-              trigger: carouselRef.current,
-              start: 'top 70%',
-              end: 'center center',
-              scrub: 1
-            }
-          }
-        );
-
-        gsap.fromTo('.taob-nav-right',
-          { x: 50, opacity: 0 },
-          { 
-            x: 0, 
-            opacity: 1, 
-            duration: 1, 
-            ease: 'back.out(1.5)', 
-            scrollTrigger: {
-              trigger: carouselRef.current,
-              start: 'top 70%',
-              end: 'center center',
-              scrub: 1
-            }
-          }
-        );
-
         gsap.fromTo('.taob-nav-dots',
           { y: 30, opacity: 0 },
           { 
@@ -371,33 +339,25 @@ export const TAOB: React.FC = () => {
                   })}
                 </div>
                 
-                {/* Mobile indicators & arrows */}
+                {/* Mobile indicators */}
                 {taobImages.length > 1 && (
-                  <div className="md:hidden flex items-center justify-center gap-4 mb-4 mt-2 px-6">
-                    <button 
-                      onClick={() => scrollToIndex(Math.max(0, activeSlide - 1))}
-                      disabled={activeSlide === 0}
-                      className="taob-nav-left w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-stone-400 disabled:opacity-30 disabled:cursor-not-allowed hover:text-stone-800 transition-colors"
-                    >
-                      <ChevronLeft size={20} />
-                    </button>
-                    <div className="taob-nav-dots flex gap-2">
+                  <div className="taob-nav-dots md:hidden flex items-center justify-center gap-6 mb-4 mt-2 px-6">
+                    <span className="text-xs font-mono tracking-widest text-stone-400">
+                      {String(activeSlide + 1).padStart(2, '0')}
+                    </span>
+                    <div className="flex gap-2">
                       {taobImages.map((_, idx) => (
                         <button 
                           key={idx}
                           onClick={() => scrollToIndex(idx)}
-                          className={`h-2 rounded-full transition-all duration-300 ${activeSlide === idx ? 'w-6 bg-stone-800' : 'w-2 bg-stone-300'}`}
+                          className={`h-[3px] rounded-full transition-all duration-500 ease-out ${activeSlide === idx ? 'w-8 bg-stone-800' : 'w-3 bg-stone-200'}`}
                           aria-label={`Go to slide ${idx + 1}`}
                         />
                       ))}
                     </div>
-                    <button 
-                      onClick={() => scrollToIndex(Math.min(taobImages.length - 1, activeSlide + 1))}
-                      disabled={activeSlide === taobImages.length - 1}
-                      className="taob-nav-right w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-stone-400 disabled:opacity-30 disabled:cursor-not-allowed hover:text-stone-800 transition-colors"
-                    >
-                      <ChevronRight size={20} />
-                    </button>
+                    <span className="text-xs font-mono tracking-widest text-stone-400">
+                      {String(taobImages.length).padStart(2, '0')}
+                    </span>
                   </div>
                 )}
                 
@@ -413,19 +373,25 @@ export const TAOB: React.FC = () => {
               </div>
               
               <div className="bg-white/40 border border-rose-100/50 p-6 sm:p-8 md:p-12 rounded-[2rem] shadow-sm fade-up">
-                <ul className="space-y-4 md:space-y-6">
+                <h3 className="text-xl md:text-2xl font-serif text-stone-900 mb-6 md:mb-8 border-b border-stone-200 pb-4">Chapitres vidéo</h3>
+                <ul className="space-y-6 md:space-y-8">
                   {[
-                    "La recette exacte de ma crème au beurre",
-                    "La méthode complète étape par étape",
-                    "Comment éviter les erreurs les plus fréquentes",
-                    "Comment rattraper une crème au beurre ratée",
-                    "Des solutions aux problèmes courants"
+                    { title: "Introduction", desc: "Petite présentation du contenu et aperçu global de la formation." },
+                    { title: "Pourquoi la crème au beurre à la meringue suisse ?", desc: "On va voir les différents types de crèmes et pourquoi la crème au beurre à la meringue suisse est la plus adaptée pour la couverture des layer cakes." },
+                    { title: "Bases générales et matériel", desc: "Les fondamentaux à maîtriser absolument ainsi que le matériel nécessaire pour la recette." },
+                    { title: "Recette et méthode (avec robot pâtissier)", desc: "Ma recette détaillée et la méthode, étape par étape, avec les erreurs les plus courantes à éviter." },
+                    { title: "Recette et méthode (avec batteur à mains)", desc: "Comment obtenir une texture tout aussi lisse et soyeuse sans robot pâtissier." },
+                    { title: "Conservation de la crème au beurre", desc: "Règles de conservation, congélation et décongélation pour préserver une texture parfaite." },
+                    { title: "Troubleshooting (résolution des problèmes)", desc: "Causes + solutions aux problèmes les plus fréquents avec la crème au beurre." }
                   ].map((item, index) => (
-                    <li key={index} className="flex items-start gap-3 md:gap-4">
-                      <div className="mt-1 w-5 h-5 md:w-6 md:h-6 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0">
-                        <Check size={12} className="text-rose-500" />
+                    <li key={index} className="flex items-start gap-4 md:gap-5">
+                      <div className="mt-1 w-7 h-7 md:w-8 md:h-8 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0 font-serif text-rose-500 font-semibold text-sm">
+                        {index + 1}
                       </div>
-                      <span className="text-base md:text-lg font-light text-stone-700">{item}</span>
+                      <div>
+                        <h4 className="text-base md:text-lg font-medium text-stone-800 mb-1">{item.title}</h4>
+                        <p className="text-sm md:text-base font-light text-stone-500 leading-relaxed">{item.desc}</p>
+                      </div>
                     </li>
                   ))}
                 </ul>
