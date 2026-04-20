@@ -27,6 +27,10 @@ export const TAOB: React.FC = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+  
+  // PDF Paper Swipe State
+  const [pdfFlipped, setPdfFlipped] = useState(false);
+  const [pdfTouchStartX, setPdfTouchStartX] = useState(0);
 
   const handleScroll = () => {
     if (carouselRef.current) {
@@ -408,35 +412,103 @@ export const TAOB: React.FC = () => {
             </div>
 
             {/* Aperçu de la formation (PDF Preview) */}
-            <section id="apercu-formation" className="max-w-5xl mx-auto scroll-mt-32">
+            <section id="apercu-formation" className="max-w-3xl mx-auto scroll-mt-32">
               <div className="text-center mb-8 md:mb-12 fade-up px-4">
                 <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-4">Aperçu de la formation</h2>
                 <p className="text-stone-500 font-light">Découvrez le contenu du livret PDF exclusif</p>
               </div>
               
               {taobPdfImages && taobPdfImages.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 px-4 md:px-0 fade-up">
-                  {taobPdfImages.map((image, index) => (
+                <>
+                  {/* Desktop / Tablet View */}
+                  <div className="hidden sm:grid sm:grid-cols-2 gap-6 md:gap-8 px-6 md:px-0 fade-up items-start">
+                    {taobPdfImages.map((image, index) => (
+                      <div 
+                        key={image.id || index}
+                        className="relative rounded-r-[1.5rem] md:rounded-r-[2rem] rounded-l-sm overflow-hidden shadow-md hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1)] transition-all duration-500 bg-[#fefcfb] border border-stone-200/60 group"
+                      >
+                        {/* Book Binding/Spine shadow */}
+                        <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-stone-300/40 to-transparent z-10 pointer-events-none mix-blend-multiply"></div>
+                        <div className="absolute inset-y-0 left-0 w-px bg-stone-400/20 z-10"></div>
+                        
+                        {image.image_url ? (
+                          <img 
+                            src={image.image_url} 
+                            alt={`Aperçu PDF ${index + 1}`} 
+                            // h-auto ensures the entire image perfectly scales without any cropping
+                            className="w-full h-auto object-contain p-2 md:p-3 transform group-hover:scale-[1.02] transition-transform duration-1000 ease-out" 
+                            referrerPolicy="no-referrer"
+                          />
+                        ) : (
+                          <div className="w-full aspect-[3/4] bg-stone-50 flex flex-col items-center justify-center text-stone-400">
+                            <BookOpen size={32} className="mb-4 opacity-50" />
+                            <span className="text-sm font-light">Image non disponible</span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Mobile 3D Page Turn View */}
+                  <div className="sm:hidden relative w-full px-6 mx-auto mt-6 mb-8 fade-up flex flex-col items-center">
                     <div 
-                      key={image.id || index}
-                      className="rounded-[2rem] overflow-hidden shadow-sm hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.08)] transition-shadow duration-500 bg-white/40 border border-stone-200/50"
+                      className="relative w-full max-w-[320px] aspect-[4/5] cursor-pointer touch-pan-y"
+                      style={{ perspective: '2000px' }}
+                      onTouchStart={(e) => setPdfTouchStartX(e.touches[0].clientX)}
+                      onTouchEnd={(e) => {
+                        const touchEndX = e.changedTouches[0].clientX;
+                        if (pdfTouchStartX - touchEndX > 50) setPdfFlipped(true); // Swipe Left (Turn to next)
+                        if (touchEndX - pdfTouchStartX > 50) setPdfFlipped(false); // Swipe Right (Turn back)
+                      }}
+                      onClick={() => setPdfFlipped(!pdfFlipped)}
                     >
-                      {image.image_url ? (
-                        <img 
-                          src={image.image_url} 
-                          alt={`Aperçu PDF ${index + 1}`} 
-                          className="w-full h-auto object-cover hover:scale-105 transition-transform duration-1000 ease-out" 
-                          referrerPolicy="no-referrer"
-                        />
-                      ) : (
-                        <div className="w-full aspect-[3/4] bg-stone-100/50 flex flex-col items-center justify-center text-stone-400">
-                          <BookOpen size={32} className="mb-4 opacity-50" />
-                          <span className="text-sm font-light">Image non disponible</span>
-                        </div>
-                      )}
+                      {/* Fake pages thickness behind the book */}
+                      <div className="absolute inset-0 bg-[#e6e2dd] border border-stone-200/50 rounded-r-[1.5rem] rounded-l-sm transform translate-x-[4px] translate-y-[4px]"></div>
+                      <div className="absolute inset-0 bg-[#f4f0ea] border border-stone-200/50 rounded-r-[1.5rem] rounded-l-sm transform translate-x-[2px] translate-y-[2px]"></div>
+
+                      {/* Page 2 (Bottom Page - Revealed when turned) */}
+                      <div className="absolute inset-0 bg-[#fefcfb] rounded-r-[1.5rem] rounded-l-sm shadow-sm border border-stone-200/80 overflow-hidden flex items-center justify-center">
+                        <div className="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-stone-300/40 via-stone-200/10 to-transparent z-10 pointer-events-none mix-blend-multiply"></div>
+                        <div className="absolute inset-y-0 left-0 w-px bg-stone-300/50 z-10"></div>
+                        {taobPdfImages[1]?.image_url ? (
+                          <img src={taobPdfImages[1].image_url} alt="Aperçu PDF 2" className="w-full h-full object-contain p-3" referrerPolicy="no-referrer" />
+                        ) : (
+                           <div className="flex flex-col items-center opacity-30"><BookOpen size={32} /></div>
+                        )}
+                      </div>
+
+                      {/* Page 1 (Top Page - Flippable) */}
+                      <div 
+                        className="absolute inset-0 bg-[#fefcfb] rounded-r-[1.5rem] rounded-l-sm shadow-md border border-stone-200/80 overflow-hidden origin-left flex items-center justify-center transition-all duration-[800ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
+                        style={{ 
+                          transform: pdfFlipped ? 'rotateY(-180deg)' : 'rotateY(0deg)',
+                          backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden',
+                          transformStyle: 'preserve-3d'
+                        }}
+                      >
+                        {/* Shadow simulating spine */}
+                        <div className="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-stone-300/40 via-stone-200/10 to-transparent z-10 pointer-events-none mix-blend-multiply"></div>
+                        <div className="absolute inset-y-0 left-0 w-px bg-stone-300/50 z-10"></div>
+                        
+                        {/* Page curl effect hint (bottom right corner) */}
+                        {!pdfFlipped && <div className="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-black/5 to-transparent z-10 rounded-br-[1.5rem] pointer-events-none"></div>}
+
+                        {taobPdfImages[0]?.image_url ? (
+                          <img src={taobPdfImages[0].image_url} alt="Aperçu PDF 1" className="w-full h-full object-contain p-3" referrerPolicy="no-referrer" />
+                        ) : (
+                           <div className="flex flex-col items-center opacity-30"><BookOpen size={32} /></div>
+                        )}
+                      </div>
                     </div>
-                  ))}
-                </div>
+
+                    <p className="text-[11px] text-stone-400 font-medium mt-10 tracking-widest uppercase flex items-center gap-3">
+                      <span className="w-4 h-px bg-stone-300"></span>
+                      Tourner la page
+                      <span className="w-4 h-px bg-stone-300"></span>
+                    </p>
+                  </div>
+                </>
               ) : (
                 <div className="w-full bg-white/40 border-2 border-stone-200/60 border-dashed rounded-[2rem] p-12 text-center fade-up flex flex-col items-center justify-center min-h-[350px]">
                   <BookOpen size={48} className="text-stone-300 mb-6" />
