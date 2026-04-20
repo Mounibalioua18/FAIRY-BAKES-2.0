@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { ScrollToTop } from '../components/ScrollToTop';
-import { Check, Play, BookOpen, Infinity, MessageCircle, Send, Copy, AlertCircle, CheckCircle2, Upload, X } from 'lucide-react';
+import { Check, Play, BookOpen, Infinity, MessageCircle, Send, Copy, AlertCircle, CheckCircle2, Upload, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { FormStatus } from '../types';
 import { usePortfolio } from '../hooks/usePortfolio';
@@ -25,6 +25,30 @@ export const TAOB: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', instagram: '', phone: '0' });
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (carouselRef.current) {
+      const scrollPos = carouselRef.current.scrollLeft;
+      const itemWidth = carouselRef.current.clientWidth * 0.8; // 80vw width
+      const gap = 24; // 1.5rem (gap-6)
+      const newIndex = Math.round(scrollPos / (itemWidth + gap));
+      setActiveSlide(Math.min(newIndex, taobImages.length - 1));
+    }
+  };
+
+  const scrollToIndex = (index: number) => {
+    if (carouselRef.current) {
+      const itemWidth = carouselRef.current.clientWidth * 0.8;
+      const gap = 24;
+      carouselRef.current.scrollTo({
+        left: index * (itemWidth + gap),
+        behavior: 'smooth'
+      });
+      setActiveSlide(index);
+    }
+  };
 
   const handleCopy = (text: string, type: 'baridi' | 'ccp') => {
     navigator.clipboard.writeText(text);
@@ -236,30 +260,36 @@ export const TAOB: React.FC = () => {
 
             {/* Aperçu Gallery */}
             <section className="max-w-5xl mx-auto mt-16 md:mt-24">
-              <div className="text-center mb-8 md:mb-12 fade-up">
+              <div className="text-center mb-8 md:mb-12 fade-up px-4">
                 <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-4">Aperçu de la formation</h2>
-                <p className="text-stone-500 font-light">Un regard sur ce qui vous attend à l'intérieur</p>
+                <p className="text-stone-500 font-light">Faites glisser pour découvrir ce qui vous attend</p>
               </div>
-              <div className="relative px-2 md:px-4 max-w-5xl mx-auto pb-4 md:pb-28">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+              <div className="relative max-w-5xl mx-auto md:pb-28">
+                {/* 
+                  Mobile: Flex container with horizontal scroll and snapping 
+                  Desktop: Strict 3-column grid
+                */}
+                <div 
+                  ref={carouselRef}
+                  onScroll={handleScroll}
+                  className="flex md:grid md:grid-cols-3 gap-6 md:gap-8 overflow-x-auto snap-x snap-mandatory px-6 md:px-4 pb-4 pt-4 md:pt-0 md:pb-0 md:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                >
                   {taobImages.map((image, index) => {
-                    // Mobile: Bento box (1st wide, next 2 squares)
-                    // Desktop: Stair-step (1st low, 2nd mid, 3rd high)
-                    let placementClasses = '';
+                    // All images are strictly the same size (aspect-[4/5] on mobile, aspect-[3/4] on PC)
+                    // We only apply vertical translation on PC to create the "staircase" effect
+                    let placementClasses = 'w-[80vw] sm:w-[60vw] md:w-auto shrink-0 snap-center snap-always aspect-[4/5] md:aspect-[3/4]';
                     if (index === 0) {
-                      placementClasses = 'col-span-2 aspect-[4/3] md:col-span-1 md:aspect-[3/4] md:translate-y-24';
+                      placementClasses += ' md:translate-y-24';
                     } else if (index === 1) {
-                      placementClasses = 'col-span-1 aspect-square md:col-span-1 md:aspect-[3/4] md:translate-y-12';
+                      placementClasses += ' md:translate-y-12';
                     } else if (index === 2) {
-                      placementClasses = 'col-span-1 aspect-square md:col-span-1 md:aspect-[3/4] md:translate-y-0';
-                    } else {
-                      placementClasses = 'col-span-2 md:col-span-1 aspect-square md:aspect-[3/4]';
+                      placementClasses += ' md:translate-y-0';
                     }
 
                     return (
                       <div 
                         key={image.id || index} 
-                        className={`fade-up rounded-xl md:rounded-[2rem] shadow-xl overflow-hidden w-full ${placementClasses}`}
+                        className={`fade-up rounded-[2rem] shadow-sm overflow-hidden ${placementClasses}`}
                       >
                         {image?.image_url?.match(/\.(mp4|webm)$/i) ? (
                           <video src={image.image_url} autoPlay loop muted playsInline className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" />
@@ -270,6 +300,37 @@ export const TAOB: React.FC = () => {
                     );
                   })}
                 </div>
+                
+                {/* Mobile indicators & arrows */}
+                {taobImages.length > 1 && (
+                  <div className="md:hidden flex items-center justify-center gap-4 mb-4 mt-2">
+                    <button 
+                      onClick={() => scrollToIndex(Math.max(0, activeSlide - 1))}
+                      disabled={activeSlide === 0}
+                      className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-stone-400 disabled:opacity-30 disabled:cursor-not-allowed hover:text-stone-800 transition-colors"
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
+                    <div className="flex gap-2">
+                      {taobImages.map((_, idx) => (
+                        <button 
+                          key={idx}
+                          onClick={() => scrollToIndex(idx)}
+                          className={`h-2 rounded-full transition-all duration-300 ${activeSlide === idx ? 'w-6 bg-stone-800' : 'w-2 bg-stone-300'}`}
+                          aria-label={`Go to slide ${idx + 1}`}
+                        />
+                      ))}
+                    </div>
+                    <button 
+                      onClick={() => scrollToIndex(Math.min(taobImages.length - 1, activeSlide + 1))}
+                      disabled={activeSlide === taobImages.length - 1}
+                      className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-stone-400 disabled:opacity-30 disabled:cursor-not-allowed hover:text-stone-800 transition-colors"
+                    >
+                      <ChevronRight size={20} />
+                    </button>
+                  </div>
+                )}
+                
                 <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] max-w-2xl bg-rose-200/20 rounded-full blur-[100px] pointer-events-none"></div>
               </div>
             </section>
