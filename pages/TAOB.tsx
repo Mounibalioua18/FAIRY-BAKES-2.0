@@ -288,7 +288,7 @@ export const TAOB: React.FC = () => {
       <div className="relative z-10">
         <Navbar />
         
-        <main className="pt-40 md:pt-48 pb-32 px-6 md:px-12 max-w-6xl mx-auto">
+        <main className="pt-32 md:pt-48 pb-32 px-6 md:px-12 max-w-6xl mx-auto">
           
           {/* Header Section */}
           <div className="text-center mb-12 md:mb-24 fade-up">
@@ -296,7 +296,7 @@ export const TAOB: React.FC = () => {
               <span className="font-serif text-rose-400 text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide relative z-10">The Art Of</span>
               <span className="font-signature text-rose-400 text-6xl sm:text-8xl md:text-[10rem] leading-none -mt-4 sm:-mt-6 md:-mt-8 relative z-0">Buttercream</span>
             </h1>
-            <div className="flex items-center justify-center gap-2 md:gap-4 mt-2">
+            <div className="flex items-center justify-center gap-2 md:gap-4 mt-8">
               <div className="h-[1px] w-8 md:w-12 bg-rose-300"></div>
               <p className="text-xs sm:text-lg md:text-xl font-light text-stone-500 tracking-[0.2em] md:tracking-[0.3em] uppercase text-center">
                 Formation en ligne
@@ -308,7 +308,7 @@ export const TAOB: React.FC = () => {
           <div className="space-y-16 md:space-y-32 text-stone-700">
             
             {/* Gallery moved right below header */}
-            <section className="max-w-5xl mx-auto pt-0 md:pt-8 mt-8 md:mt-16">
+            <section className="max-w-5xl mx-auto pt-0 md:pt-8 mt-12 md:mt-16">
               <div className="relative max-w-5xl mx-auto md:pb-28">
                 {/* 
                   Mobile: Flex container with horizontal scroll and snapping 
@@ -346,7 +346,7 @@ export const TAOB: React.FC = () => {
                 
                 {/* Mobile indicators & arrows */}
                 {taobImages.length > 1 && (
-                  <div className="md:hidden flex items-center justify-center gap-4 mb-4 mt-2 px-6">
+                  <div className="md:hidden flex items-center justify-center gap-4 mb-4 mt-8 px-6">
                     <button 
                       onClick={() => scrollToIndex(Math.max(0, activeSlide - 1))}
                       disabled={activeSlide === 0}
@@ -379,7 +379,7 @@ export const TAOB: React.FC = () => {
             </section>
 
             {/* Clickable Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 pt-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 pt-28 md:pt-8">
               <button 
                 onClick={(e) => { e.preventDefault(); document.getElementById('chapitres-video')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className="group text-center space-y-4 fade-up cursor-pointer hover:-translate-y-1 transition-transform duration-300"
