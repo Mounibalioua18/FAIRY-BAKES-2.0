@@ -66,7 +66,7 @@ export const Hero: React.FC<HeroProps> = ({ mainImage }) => {
             <a href="/#order" className="bg-rose-100 text-rose-800 px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:bg-rose-200 transition-all text-center shadow-sm">
               Réserver Votre Date
             </a>
-            <Link to="/taob" className="border border-stone-200 text-stone-600 px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:bg-stone-50 transition-all text-center">
+            <Link to="/taob" className="bg-stone-900 text-white px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:bg-stone-800 transition-all text-center">
               Rejoindre TAOB
             </Link>
           </div>

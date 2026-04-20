@@ -20,7 +20,7 @@ export const Footer: React.FC = () => {
             </span>
           </div>
           <p className="text-stone-400 font-light leading-relaxed mb-8 max-w-sm">
-            De l'art comestible pour ceux qui croient en la magie. Basé à Alger, une part de beauté à chaque gâteau.
+            L'Art Gourmand pour ceux qui croient en la magie. Basé à Alger, une part de beauté à chaque gâteau.
           </p>
         </div>
         
