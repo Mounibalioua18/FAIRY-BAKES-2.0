@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const TAOB: React.FC = () => {
   const mainRef = useRef<HTMLDivElement>(null);
-  const { taobImages, taobPdfImages } = usePortfolio();
+  const { taobImages, taobPdfImages, loading } = usePortfolio();
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [copiedBaridi, setCopiedBaridi] = useState(false);
@@ -208,15 +208,15 @@ export const TAOB: React.FC = () => {
       // Gallery entrance exactly like the first page but far more dramatic (to be more noticeable!)
       if (carouselRef.current) {
         const taobGalleryItems = gsap.utils.toArray('.taob-gallery-item');
+        
+        // 1. Reveal clipping mask of the container over 2 seconds
         gsap.fromTo(taobGalleryItems, 
-          { opacity: 0, y: 150, scale: 0.85, rotation: 3 },
+          { clipPath: 'inset(100% 0% 0% 0%)', opacity: 1 },
           { 
+            clipPath: 'inset(0% 0% 0% 0%)', 
             opacity: 1, 
-            y: 0, 
-            scale: 1,
-            rotation: 0,
-            duration: 1.6,
-            ease: 'back.out(1.2)',
+            duration: 2,
+            ease: 'expo.out',
             stagger: 0.15,
             scrollTrigger: {
               trigger: carouselRef.current,
@@ -224,6 +224,24 @@ export const TAOB: React.FC = () => {
             }
           }
         );
+
+        // 2. Subtle internal scale down of the inside contents (for the slow cinematic effect)
+        const innerImages = gsap.utils.toArray('.taob-img-inner');
+        if (innerImages.length > 0) {
+          gsap.fromTo(innerImages, 
+            { scale: 1.2 },
+            { 
+              scale: 1,
+              duration: 2.5,
+              ease: 'expo.out',
+              stagger: 0.15,
+              scrollTrigger: {
+                trigger: carouselRef.current,
+                start: 'top 75%',
+              }
+            }
+          );
+        }
 
         // Mobile Controls Animation tied to scroll
         gsap.fromTo('.taob-nav-left',
@@ -332,13 +350,13 @@ export const TAOB: React.FC = () => {
                     return (
                       <div 
                         key={image.id || index} 
-                        className={`taob-gallery-item rounded-[2rem] shadow-sm overflow-hidden ${placementClasses}`}
+                        className={`taob-gallery-item rounded-[2rem] shadow-sm overflow-hidden bg-stone-100 ${placementClasses}`}
                       >
                         {image?.image_url?.match(/\.(mp4|webm)$/i) ? (
-                          <video src={image.image_url} autoPlay loop muted playsInline className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" />
-                        ) : (
-                          <img src={image?.image_url} alt={`Aperçu ${index + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" referrerPolicy="no-referrer" />
-                        )}
+                          <video src={image.image_url} autoPlay loop muted playsInline className="taob-img-inner w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" />
+                        ) : image?.image_url ? (
+                          <img src={image?.image_url} alt={`Aperçu ${index + 1}`} fetchPriority="high" decoding="sync" className="taob-img-inner w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" referrerPolicy="no-referrer" />
+                        ) : null}
                       </div>
                     );
                   })}
