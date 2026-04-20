@@ -318,9 +318,9 @@ export const TAOB: React.FC = () => {
                   {taobImages.map((image, index) => {
                     let placementClasses = 'w-[80vw] sm:w-[60vw] md:w-auto shrink-0 snap-center snap-always aspect-[4/5] md:aspect-[3/4]';
                     if (index === 0) {
-                      placementClasses += ' md:translate-y-24';
+                      placementClasses += ' md:translate-y-0';
                     } else if (index === 1) {
-                      placementClasses += ' md:translate-y-12';
+                      placementClasses += ' md:translate-y-16';
                     } else if (index === 2) {
                       placementClasses += ' md:translate-y-0';
                     }
