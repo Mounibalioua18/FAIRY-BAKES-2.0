@@ -40,8 +40,16 @@ export const OrderForm: React.FC = () => {
   const monthName = nextMonthDate.toLocaleString('default', { month: 'long' });
   const year = nextMonthDate.getFullYear();
   
-  const minDate = nextMonthDate.toISOString().split('T')[0];
-  const maxDate = lastDayNextMonth.toISOString().split('T')[0];
+  // Helper to format date in local time YYYY-MM-DD avoiding UTC offset issues
+  const toLocalISOString = (date: Date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
+
+  const minDate = toLocalISOString(nextMonthDate);
+  const maxDate = toLocalISOString(lastDayNextMonth);
 
   const [formData, setFormData] = useState<CakeOrder>({
     customerName: '',
