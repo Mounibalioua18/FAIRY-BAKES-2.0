@@ -27,10 +27,6 @@ export const TAOB: React.FC = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
-  
-  // PDF Paper Swipe State
-  const [pdfFlipped, setPdfFlipped] = useState(false);
-  const [pdfTouchStartX, setPdfTouchStartX] = useState(0);
 
   const handleScroll = () => {
     if (carouselRef.current) {
@@ -467,56 +463,43 @@ export const TAOB: React.FC = () => {
                     ))}
                   </div>
 
-                  {/* Mobile Stacked Vertical Swipe View */}
-                  <div className="sm:hidden relative w-full px-6 mx-auto mt-6 mb-8 fade-up flex flex-col items-center">
+                  {/* Mobile Native Horizontal Scroll View */}
+                  <div className="sm:hidden w-full mt-8 mb-8 fade-up">
+                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-6 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                      {taobPdfImages.map((image, index) => (
+                        <div 
+                          key={image.id || index}
+                          className="relative w-[85vw] shrink-0 snap-center rounded-[1.5rem] overflow-hidden shadow-md bg-[#fefcfb] border border-stone-200/60"
+                        >
+                          {/* Page Number Badge */}
+                          <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm border border-stone-200/50 text-stone-500 text-[10px] font-medium tracking-widest uppercase px-3 py-1 rounded-full z-20">
+                            {index + 1} / {taobPdfImages.length}
+                          </div>
+
+                          {/* Subtle spine shadow on the left */}
+                          <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-stone-300/40 to-transparent z-10 pointer-events-none mix-blend-multiply"></div>
+                          <div className="absolute inset-y-0 left-0 w-px bg-stone-400/20 z-10"></div>
+                          
+                          {image.image_url ? (
+                            <img 
+                              src={image.image_url} 
+                              alt={`Aperçu PDF ${index + 1}`} 
+                              className="w-full h-auto object-contain p-2" 
+                              referrerPolicy="no-referrer"
+                            />
+                          ) : (
+                            <div className="w-full aspect-[3/4] bg-stone-50 flex flex-col items-center justify-center text-stone-400">
+                              <BookOpen size={32} className="mb-4 opacity-50" />
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                     
-                    {/* Badge indicating total pages */}
-                    <div className="bg-stone-100 text-stone-500 text-xs font-medium tracking-widest uppercase px-4 py-1.5 rounded-full mb-6 border border-stone-200">
-                      Page {pdfFlipped ? '2' : '1'} sur 2
-                    </div>
-
-                    <div 
-                      className="relative w-full max-w-[320px] aspect-[4/5] cursor-pointer touch-pan-x"
-                      onTouchStart={(e) => setPdfTouchStartX(e.touches[0].clientY)}
-                      onTouchEnd={(e) => {
-                        const touchEndY = e.changedTouches[0].clientY;
-                        if (pdfTouchStartX - touchEndY > 40) setPdfFlipped(true); // Swipe Up
-                        if (touchEndY - pdfTouchStartX > 40) setPdfFlipped(false); // Swipe Down
-                      }}
-                      onClick={() => setPdfFlipped(!pdfFlipped)}
-                    >
-                      {/* Fake pages thickness behind the book */}
-                      <div className="absolute inset-x-4 -bottom-3 h-6 bg-[#e6e2dd] border border-stone-200/50 rounded-b-[1.5rem]"></div>
-                      <div className="absolute inset-x-2 -bottom-1.5 h-6 bg-[#f4f0ea] border border-stone-200/50 rounded-b-[1.5rem]"></div>
-
-                      {/* Page 2 (Bottom Page - Revealed when swiped up) */}
-                      <div className="absolute inset-0 bg-[#fefcfb] rounded-[1.5rem] shadow-sm border border-stone-200/80 overflow-hidden flex items-center justify-center transition-all duration-500">
-                        {taobPdfImages[1]?.image_url ? (
-                          <img src={taobPdfImages[1].image_url} alt="Aperçu PDF 2" className="w-full h-full object-contain p-3" referrerPolicy="no-referrer" />
-                        ) : (
-                           <div className="flex flex-col items-center opacity-30"><BookOpen size={32} /></div>
-                        )}
-                      </div>
-
-                      {/* Page 1 (Top Page - Swipes Up) */}
-                      <div 
-                        className={`absolute inset-0 bg-[#fefcfb] rounded-[1.5rem] shadow-md border border-stone-200/80 overflow-hidden flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
-                          ${pdfFlipped ? '-translate-y-[105%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}
-                      >
-                        {taobPdfImages[0]?.image_url ? (
-                          <img src={taobPdfImages[0].image_url} alt="Aperçu PDF 1" className="w-full h-full object-contain p-3" referrerPolicy="no-referrer" />
-                        ) : (
-                           <div className="flex flex-col items-center opacity-30"><BookOpen size={32} /></div>
-                        )}
-                      </div>
-                    </div>
-
-                    <p className="text-[11px] text-stone-400 font-medium mt-10 tracking-widest uppercase flex flex-col items-center gap-1">
-                      <span className="flex items-center gap-3">
-                        <span className="w-4 h-px bg-stone-300"></span>
-                        Glisser vers le {pdfFlipped ? 'bas' : 'haut'}
-                        <span className="w-4 h-px bg-stone-300"></span>
-                      </span>
+                    <p className="text-[11px] text-stone-400 font-medium text-center tracking-widest uppercase flex items-center justify-center gap-3">
+                      <span className="w-4 h-px bg-stone-300"></span>
+                      Faire glisser pour lire
+                      <span className="w-4 h-px bg-stone-300"></span>
                     </p>
                   </div>
                 </>
