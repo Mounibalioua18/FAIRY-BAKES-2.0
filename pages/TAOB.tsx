@@ -84,8 +84,8 @@ export const TAOB: React.FC = () => {
     setFormErrors(prev => ({ ...prev, proofFile: false }));
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 50 * 1024 * 1024) {
-        alert("File is too large. Max 50MB.");
+      if (file.size > 20 * 1024 * 1024) { // 20MB limit
+        alert("L'image est trop volumineuse (Max 20MB).");
         return;
       }
       setProofFile(file);
@@ -106,6 +106,15 @@ export const TAOB: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
+    
+    // Honeypot check (hidden field)
+    const formDataObj = new FormData(e.target as HTMLFormElement);
+    if (formDataObj.get('bot_field_website')) {
+      // Silently succeed to trick bots
+      setStatus(FormStatus.SUCCESS);
+      setFormData({ name: '', instagram: '', phone: '0' });
+      return;
+    }
     
     // Check all fields at once to show all errors
     const errors: any = {};
@@ -664,6 +673,9 @@ export const TAOB: React.FC = () => {
                   <p className="text-sm md:text-base text-stone-500 font-light mb-8 md:mb-10">Remplissez ce formulaire après avoir effectué votre paiement.</p>
                   
                   <form onSubmit={handleSubmit} noValidate className="space-y-6">
+                        {/* Honeypot field (hidden from users) */}
+                        <input type="text" name="bot_field_website" className="hidden" tabIndex={-1} autoComplete="off" />
+                        
                         {status === FormStatus.ERROR && errorMessage && (
                           <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
                             <AlertCircle size={18} />

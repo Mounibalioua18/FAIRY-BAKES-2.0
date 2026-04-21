@@ -162,8 +162,8 @@ export const OrderForm: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 50 * 1024 * 1024) {
-        alert("File is too large. Max 50MB.");
+      if (file.size > 20 * 1024 * 1024) { // 20MB limit
+        alert("L'image est trop volumineuse (Max 20MB).");
         return;
       }
       setSelectedFile(file);
@@ -250,6 +250,9 @@ export const OrderForm: React.FC = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="bg-stone-50 p-8 md:p-12 rounded-[2.5rem] shadow-sm border border-stone-100 relative overflow-hidden">
+              {/* Honeypot field (hidden from users) */}
+              <input type="text" name="bot_field_website" className="hidden" tabIndex={-1} autoComplete="off" />
+
               {status === FormStatus.ERROR && (
                 <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
                   <AlertCircle size={18} />
