@@ -200,45 +200,8 @@ export const TAOB: React.FC = () => {
           scrub: true
         }
       });
-
-      // Gallery entrance exactly like the first page but far more dramatic (to be more noticeable!)
+      
       if (carouselRef.current) {
-        const taobGalleryItems = gsap.utils.toArray('.taob-gallery-item');
-        
-        // 1. Reveal clipping mask of the container over 2 seconds
-        gsap.fromTo(taobGalleryItems, 
-          { clipPath: 'inset(100% 0% 0% 0%)', opacity: 1 },
-          { 
-            clipPath: 'inset(0% 0% 0% 0%)', 
-            opacity: 1, 
-            duration: 2,
-            ease: 'expo.out',
-            stagger: 0.15,
-            scrollTrigger: {
-              trigger: carouselRef.current,
-              start: 'top 75%',
-            }
-          }
-        );
-
-        // 2. Subtle internal scale down of the inside contents (for the slow cinematic effect)
-        const innerImages = gsap.utils.toArray('.taob-img-inner');
-        if (innerImages.length > 0) {
-          gsap.fromTo(innerImages, 
-            { scale: 1.2 },
-            { 
-              scale: 1,
-              duration: 2.5,
-              ease: 'expo.out',
-              stagger: 0.15,
-              scrollTrigger: {
-                trigger: carouselRef.current,
-                start: 'top 75%',
-              }
-            }
-          );
-        }
-
         // Mobile Controls Animation tied to scroll
         gsap.fromTo('.taob-nav-left',
           { x: -50, opacity: 0 },
@@ -291,6 +254,51 @@ export const TAOB: React.FC = () => {
     }, mainRef);
     return () => ctx.revert();
   }, []);
+
+  // Separate animation for the gallery images to WAIT for loading
+  useEffect(() => {
+    if (loading || !carouselRef.current) return;
+    
+    const ctx = gsap.context(() => {
+      const taobGalleryItems = gsap.utils.toArray('.taob-gallery-item');
+      
+      // 1. Very slow clip-path reveal to mask network transit
+      gsap.fromTo(taobGalleryItems, 
+        { clipPath: 'inset(100% 0% 0% 0%)', opacity: 1 },
+        { 
+          clipPath: 'inset(0% 0% 0% 0%)', 
+          opacity: 1, 
+          duration: 2.5, // Slowed down from 2
+          ease: 'expo.out',
+          stagger: 0.2, // Slightly more stagger
+          scrollTrigger: {
+            trigger: carouselRef.current,
+            start: 'top 85%', // starts revealing sooner so it's already moving when looking at it
+          }
+        }
+      );
+
+      // 2. Settle the image down internally over a long 4 seconds
+      const innerImages = gsap.utils.toArray('.taob-img-inner');
+      if (innerImages.length > 0) {
+        gsap.fromTo(innerImages, 
+          { scale: 1.25 },
+          { 
+            scale: 1,
+            duration: 4, 
+            ease: 'expo.out',
+            stagger: 0.2,
+            scrollTrigger: {
+              trigger: carouselRef.current,
+              start: 'top 85%',
+            }
+          }
+        );
+      }
+    }, carouselRef);
+    
+    return () => ctx.revert();
+  }, [loading]);
 
   return (
     <div ref={mainRef} className="min-h-screen selection:bg-rose-100 selection:text-rose-900 overflow-x-hidden bg-[#fdfaf6]">
@@ -346,7 +354,8 @@ export const TAOB: React.FC = () => {
                     return (
                       <div 
                         key={image.id || index} 
-                        className={`taob-gallery-item rounded-[2rem] shadow-sm overflow-hidden bg-stone-100 ${placementClasses}`}
+                        className={`taob-gallery-item rounded-[2rem] shadow-sm overflow-hidden bg-stone-100 opacity-0 ${placementClasses}`}
+                        style={{ opacity: 0, clipPath: 'inset(100% 0% 0% 0%)' }} // Force invisible until GSAP overtakes
                       >
                         {image?.image_url?.match(/\.(mp4|webm)$/i) ? (
                           <video src={image.image_url} autoPlay loop muted playsInline className="taob-img-inner w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out" />
@@ -469,7 +478,7 @@ export const TAOB: React.FC = () => {
                       {taobPdfImages.map((image, index) => (
                         <div 
                           key={image.id || index}
-                          className="relative w-[85vw] shrink-0 snap-center rounded-[1.5rem] overflow-hidden shadow-md bg-[#fefcfb] border border-stone-200/60"
+                          className="relative w-[60vw] shrink-0 snap-center rounded-[1.5rem] overflow-hidden shadow-md bg-[#fefcfb] border border-stone-200/60"
                         >
                           {/* Page Number Badge */}
                           <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm border border-stone-200/50 text-stone-500 text-[10px] font-medium tracking-widest uppercase px-3 py-1 rounded-full z-20">
