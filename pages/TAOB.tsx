@@ -444,13 +444,18 @@ export const TAOB: React.FC = () => {
               {taobPdfImages && taobPdfImages.length > 0 ? (
                 <>
                   {/* Desktop / Tablet View */}
-                  <div className="hidden sm:grid sm:grid-cols-2 gap-6 md:gap-8 px-6 md:px-0 fade-up items-start">
+                  <div className="hidden sm:grid sm:grid-cols-2 gap-8 md:gap-12 px-6 md:px-0 fade-up items-start max-w-4xl mx-auto">
                     {taobPdfImages.map((image, index) => (
                       <div 
                         key={image.id || index}
-                        className="relative rounded-r-[1.5rem] md:rounded-r-[2rem] rounded-l-sm overflow-hidden shadow-md hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1)] transition-all duration-500 bg-[#fefcfb] border border-stone-200/60 group"
+                        className="relative rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-md hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1)] transition-all duration-500 bg-[#fefcfb] border border-stone-200/60 group"
                       >
-                        {/* Book Binding/Spine shadow */}
+                        {/* Page Number Badge */}
+                        <div className="absolute top-4 right-4 md:top-6 md:right-6 bg-white/90 backdrop-blur-sm border border-stone-200/50 text-stone-500 text-xs font-medium tracking-widest uppercase px-4 py-1.5 rounded-full z-20 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+                          {index + 1} / {taobPdfImages.length}
+                        </div>
+
+                        {/* Subtle spine shadow on the left */}
                         <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-stone-300/40 to-transparent z-10 pointer-events-none mix-blend-multiply"></div>
                         <div className="absolute inset-y-0 left-0 w-px bg-stone-400/20 z-10"></div>
                         
@@ -459,7 +464,7 @@ export const TAOB: React.FC = () => {
                             src={image.image_url} 
                             alt={`Aperçu PDF ${index + 1}`} 
                             // h-auto ensures the entire image perfectly scales without any cropping
-                            className="w-full h-auto object-contain p-2 md:p-3 transform group-hover:scale-[1.02] transition-transform duration-1000 ease-out" 
+                            className="w-full h-auto object-contain p-2 md:p-4 transform group-hover:scale-[1.02] transition-transform duration-1000 ease-out" 
                             referrerPolicy="no-referrer"
                           />
                         ) : (
