@@ -608,19 +608,19 @@ export const TAOB: React.FC = () => {
                   <div className="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm text-center relative group hover:-translate-y-1 transition-transform duration-300">
                     <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-500 font-serif text-xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-rose-100 group-hover:bg-rose-400 group-hover:text-white transition-colors">1</div>
                     <h4 className="font-serif text-xl text-stone-900 mb-3">Le Paiement</h4>
-                    <p className="text-stone-500 font-light text-sm leading-relaxed">Transférez le montant de 2500 DA via BaridiMob ou CCP en utilisant nos coordonnées.</p>
+                    <p className="text-stone-600 font-light text-sm leading-relaxed">Transférez le montant de 2500 DA via BaridiMob ou CCP en utilisant nos coordonnées.</p>
                   </div>
                   
                   <div className="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm text-center relative group hover:-translate-y-1 transition-transform duration-300">
                     <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-500 font-serif text-xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-rose-100 group-hover:bg-rose-400 group-hover:text-white transition-colors">2</div>
                     <h4 className="font-serif text-xl text-stone-900 mb-3">La Preuve</h4>
-                    <p className="text-stone-500 font-light text-sm leading-relaxed">Faites une capture d'écran du transfert réussi ou prenez en photo le reçu de la poste.</p>
+                    <p className="text-stone-600 font-light text-sm leading-relaxed">Faites une capture d'écran du transfert réussi ou prenez en photo le reçu de la poste.</p>
                   </div>
                   
                   <div className="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm text-center relative group hover:-translate-y-1 transition-transform duration-300">
                     <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-500 font-serif text-xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-rose-100 group-hover:bg-rose-400 group-hover:text-white transition-colors">3</div>
                     <h4 className="font-serif text-xl text-stone-900 mb-3">Le Formulaire</h4>
-                    <p className="text-stone-500 font-light text-sm leading-relaxed">Remplissez le formulaire ci-dessous avec vos informations et attachez la photo du reçu.</p>
+                    <p className="text-stone-600 font-light text-sm leading-relaxed">Remplissez le formulaire ci-dessous avec vos informations et attachez la photo du reçu.</p>
                   </div>
                 </div>
               </div>
