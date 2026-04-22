@@ -205,9 +205,9 @@ export const OrderForm: React.FC = () => {
         </div>
       )}
 
-      <section id="order" className="py-24 px-6 md:px-12 bg-white scroll-mt-24 relative">
+      <section id="order" className="py-16 px-6 md:px-12 bg-white scroll-mt-24 relative">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           <div>
             <h2 className="text-4xl md:text-6xl font-serif text-stone-900 mb-6">Créneaux de Réservation</h2>
             <div className="inline-flex items-center space-x-2 bg-stone-900 text-white px-4 py-2 rounded-full text-xs uppercase tracking-widest mb-8">
@@ -242,20 +242,20 @@ export const OrderForm: React.FC = () => {
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="bg-stone-50 p-8 md:p-12 rounded-[2.5rem] shadow-sm border border-stone-100 relative overflow-hidden">
+            <form onSubmit={handleSubmit} className="bg-stone-50 p-6 md:p-8 rounded-[2rem] shadow-sm border border-stone-100 relative overflow-hidden text-sm">
               {/* Honeypot field (hidden from users) */}
               <input type="text" name="bot_field_website" className="hidden" tabIndex={-1} autoComplete="off" />
 
               {status === FormStatus.ERROR && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
+                <div className="mb-4 p-3 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-3">
                   <AlertCircle size={18} />
                   {errorMessage}
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Nom</label>
+                  <label className="block text-[10px] uppercase tracking-widest text-stone-500 mb-1.5 font-bold">Nom</label>
                   <input 
                     required
                     type="text" 
@@ -263,11 +263,11 @@ export const OrderForm: React.FC = () => {
                     value={formData.customerName}
                     onChange={handleChange}
                     placeholder="Votre Nom"
-                    className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
+                    className="w-full bg-white border border-stone-200 rounded-xl px-4 py-2.5 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
                   />
                 </div>
                 <div>
-                  <label className={`block text-xs uppercase tracking-widest mb-2 font-bold ${formErrors.phoneNumber ? 'text-red-500' : 'text-stone-500'}`}>Téléphone</label>
+                  <label className={`block text-[10px] uppercase tracking-widest mb-1.5 font-bold ${formErrors.phoneNumber ? 'text-red-500' : 'text-stone-500'}`}>Téléphone</label>
                   <input 
                     required
                     type="tel" 
@@ -275,35 +275,35 @@ export const OrderForm: React.FC = () => {
                     value={formData.phoneNumber}
                     onChange={handleChange}
                     maxLength={10}
-                    className={`w-full bg-white border rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 transition-all ${formErrors.phoneNumber ? 'border-red-400 focus:ring-red-100' : 'border-stone-200 focus:ring-rose-100'}`}
+                    className={`w-full bg-white border rounded-xl px-4 py-2.5 text-stone-800 focus:outline-none focus:ring-2 transition-all ${formErrors.phoneNumber ? 'border-red-400 focus:ring-red-100' : 'border-stone-200 focus:ring-rose-100'}`}
                   />
                   {formErrors.phoneNumber && (
-                    <p className="text-red-500 text-[10px] mt-1.5 uppercase font-medium tracking-wide">Le numéro est faux</p>
+                    <p className="text-red-500 text-[9px] mt-1 uppercase font-medium tracking-wide">Le numéro est faux</p>
                   )}
                 </div>
               </div>
 
-              <div className="mb-6">
-                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Compte Instagram</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-400 font-bold select-none">@</span>
-                  <input 
-                    required
-                    type="text" 
-                    name="instagramHandle"
-                    value={formData.instagramHandle}
-                    onChange={handleChange}
-                    placeholder="votre_compte"
-                    className="w-full bg-white border border-stone-200 rounded-xl pl-9 pr-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
-                  />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="flex flex-col justify-end">
+                  <label className="block text-[10px] uppercase tracking-widest text-stone-500 mb-1.5 font-bold">Instagram</label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-400 font-bold select-none">@</span>
+                    <input 
+                      required
+                      type="text" 
+                      name="instagramHandle"
+                      value={formData.instagramHandle}
+                      onChange={handleChange}
+                      placeholder="votre_compte"
+                      className="w-full bg-white border border-stone-200 rounded-xl pl-9 pr-4 py-2.5 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
+                    />
+                  </div>
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div className="flex flex-col justify-end h-full">
-                  <div className="flex justify-between items-end mb-2 gap-2 mt-auto">
-                    <label className="block text-xs uppercase tracking-widest text-stone-500 font-bold leading-tight pb-0.5">Date de l'événement</label>
-                    <span className="text-[9px] sm:text-[10px] text-rose-400 font-semibold uppercase text-right leading-tight pb-0.5 whitespace-nowrap">{monthName} Uniquement</span>
+                
+                <div className="flex flex-col justify-end">
+                  <div className="flex justify-between items-end mb-1.5 gap-2">
+                    <label className="block text-[10px] uppercase tracking-widest text-stone-500 font-bold leading-tight pb-0.5">Date</label>
+                    <span className="text-[9px] text-rose-400 font-semibold uppercase text-right leading-tight pb-0.5 whitespace-nowrap">{monthName} Uniquement</span>
                   </div>
                   <div className="relative">
                     <input 
@@ -316,17 +316,20 @@ export const OrderForm: React.FC = () => {
                       onChange={handleChange}
                       onClick={handleDateClick}
                       onKeyDown={(e) => e.preventDefault()}
-                      className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all cursor-pointer hover:border-rose-300"
+                      className="w-full bg-white border border-stone-200 rounded-xl px-4 py-2.5 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all cursor-pointer hover:border-rose-300"
                     />
                   </div>
                 </div>
-                <div className="flex flex-col justify-end h-full">
-                  <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold leading-tight mt-auto pb-0.5">Taille</label>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="flex flex-col justify-end">
+                  <label className="block text-[10px] uppercase tracking-widest text-stone-500 mb-1.5 font-bold leading-tight">Taille</label>
                   <select 
                     name="cakeSize"
                     value={formData.cakeSize}
                     onChange={handleChange}
-                    className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all appearance-none cursor-pointer"
+                    className="w-full bg-white border border-stone-200 rounded-xl px-4 py-2.5 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all appearance-none cursor-pointer"
                   >
                     <option value="12cm">12cm (Petit)</option>
                     <option value="15cm">15cm (Standard)</option>
@@ -334,30 +337,29 @@ export const OrderForm: React.FC = () => {
                     <option value="custom">Sur mesure (Mariage/Fiançailles)</option>
                   </select>
                 </div>
+                <div className="flex flex-col justify-end">
+                  <label className="block text-[10px] uppercase tracking-widest text-stone-500 mb-1.5 font-bold leading-tight">Saveur</label>
+                  <select 
+                    name="flavor"
+                    value={formData.flavor}
+                    onChange={handleChange}
+                    className="w-full bg-white border border-stone-200 rounded-xl px-4 py-2.5 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all appearance-none cursor-pointer"
+                  >
+                    <option value="Vanille">Vanille</option>
+                    <option value="Chocolat">Chocolat</option>
+                    <option value="Vanille Fraise">Vanille Fraise</option>
+                    <option value="Pistache Framboise">Pistache Framboise</option>
+                    <option value="Other">Autre (À discuter)</option>
+                  </select>
+                </div>
               </div>
 
               <div className="mb-6">
-                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Saveur</label>
-                <select 
-                  name="flavor"
-                  value={formData.flavor}
-                  onChange={handleChange}
-                  className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all appearance-none cursor-pointer"
-                >
-                  <option value="Vanille">Vanille</option>
-                  <option value="Chocolat">Chocolat</option>
-                  <option value="Vanille Fraise">Vanille Fraise</option>
-                  <option value="Pistache Framboise">Pistache Framboise</option>
-                  <option value="Other">Autre (À discuter)</option>
-                </select>
-              </div>
-
-              <div className="mb-8">
-                <label className="block text-xs uppercase tracking-widest text-stone-500 mb-2 font-bold">Inspiration</label>
+                <label className="block text-[10px] uppercase tracking-widest text-stone-500 mb-1.5 font-bold">Inspiration (Max 50MB)</label>
                 <div 
                   onClick={() => !previewUrl && fileInputRef.current?.click()}
-                  className={`relative border-2 border-dashed rounded-2xl transition-all flex flex-col items-center justify-center p-4 cursor-pointer overflow-hidden ${
-                    previewUrl ? 'border-rose-200 bg-white h-48' : 'border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 h-32'
+                  className={`relative border-2 border-dashed rounded-xl transition-all flex flex-col items-center justify-center p-2 cursor-pointer overflow-hidden ${
+                    previewUrl ? 'border-rose-200 bg-white h-24' : 'border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 h-20'
                   }`}
                 >
                   <input 
@@ -374,19 +376,18 @@ export const OrderForm: React.FC = () => {
                       <button 
                         type="button"
                         onClick={(e) => { e.stopPropagation(); removeImage(); }}
-                        className="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-full shadow-lg hover:bg-rose-600 transition-colors z-20"
+                        className="absolute top-1 right-1 p-1 bg-rose-500 text-white rounded-full shadow-lg hover:bg-rose-600 transition-colors z-20"
                       >
-                        <X size={14} />
+                        <X size={12} />
                       </button>
                     </div>
                   ) : (
-                    <>
-                      <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-2">
-                        <Upload size={20} />
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center text-rose-400">
+                        <Upload size={16} />
                       </div>
-                      <p className="text-[11px] text-stone-400 uppercase tracking-widest font-semibold text-center px-4">joindre votre image</p>
-                      <p className="text-[9px] text-stone-300 mt-1">JPEG, PNG jusqu'à 50MB</p>
-                    </>
+                      <p className="text-[10px] text-stone-400 uppercase tracking-widest font-semibold">joindre une image</p>
+                    </div>
                   )}
                 </div>
               </div>
@@ -394,21 +395,21 @@ export const OrderForm: React.FC = () => {
               <button 
                 disabled={status === FormStatus.SUBMITTING}
                 type="submit" 
-                className="w-full bg-rose-400 text-white rounded-full py-4 uppercase tracking-[0.2em] text-sm font-semibold hover:bg-rose-500 transition-all shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-rose-400 text-white rounded-xl py-3.5 uppercase tracking-[0.2em] text-xs font-semibold hover:bg-rose-500 transition-all shadow-md hover:shadow-lg flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {status === FormStatus.SUBMITTING ? (
                   <span className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Envoi de la Commande...
+                    Envoi...
                   </span>
                 ) : (
                   <>
-                    <span>Pré-commander pour {monthName}</span>
-                    <Send size={16} />
+                    <span>Pré-commander ({monthName})</span>
+                    <Send size={14} />
                   </>
                 )}
               </button>
-              <p className="mt-4 text-[10px] text-center text-stone-400 uppercase tracking-widest">Livraison sur Alger Uniquement • 50% d'Acompte Requis</p>
+              <p className="mt-3 text-[9px] text-center text-stone-400 uppercase tracking-widest">Alger Uniquement • 50% d'Acompte Requis</p>
             </form>
           )}
           </div>

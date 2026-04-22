@@ -82,9 +82,13 @@ export const Hero: React.FC<HeroProps> = ({ mainImage }) => {
             key={mainImage.image_url /* Force re-render of image if it changes fast enough */}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent"></div>
-          <div className="absolute bottom-10 left-10 text-white">
-            <p className="hero-fade-in text-xs uppercase tracking-[0.2em] font-medium opacity-80">{mainImage.description || 'À la Une'}</p>
-            <h3 className="hero-fade-in text-3xl font-serif">{mainImage.title || 'Midnight Navy Ruffle'}</h3>
+          <div className="absolute bottom-10 left-10 text-white pr-10">
+            {mainImage.description && (
+              <p className="hero-fade-in text-xs uppercase tracking-[0.2em] font-medium opacity-80">{mainImage.description}</p>
+            )}
+            {mainImage.title && (
+              <h3 className="hero-fade-in text-3xl md:text-5xl font-serif mt-2">{mainImage.title}</h3>
+            )}
           </div>
         </div>
       </div>

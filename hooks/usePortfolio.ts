@@ -13,19 +13,19 @@ export interface PortfolioItem {
 const DEFAULT_MAIN: PortfolioItem = {
   id: 'main',
   type: 'main',
-  title: 'Midnight Navy Ruffle',
-  description: 'Featured Art',
+  title: '',
+  description: '',
   image_url: '',
   position: 0
 };
 
 const DEFAULT_GALLERY: PortfolioItem[] = [
-  { id: '1', title: 'Cottage Matcha Meadow', description: 'Fairy Garden', image_url: '', type: 'gallery', position: 1 }, 
-  { id: '2', title: 'Alabaster Petal Muse', description: 'Ethereal', image_url: '', type: 'gallery', position: 2 }, 
-  { id: '3', title: 'Floral Tapestry', description: 'Botanical', image_url: '', type: 'gallery', position: 3 }, 
-  { id: '4', title: 'Rosewood Enchantment', description: 'Vintage', image_url: '', type: 'gallery', position: 4 },
-  { id: '5', title: 'Celestial Silk Tier', description: 'Grand Celebration', image_url: '', type: 'gallery', position: 5 },
-  { id: '6', title: 'Ethereal Garden Whispers', description: 'Artisan Signature', image_url: '', type: 'gallery', position: 6 },
+  { id: '1', title: '', description: '', image_url: '', type: 'gallery', position: 1 }, 
+  { id: '2', title: '', description: '', image_url: '', type: 'gallery', position: 2 }, 
+  { id: '3', title: '', description: '', image_url: '', type: 'gallery', position: 3 }, 
+  { id: '4', title: '', description: '', image_url: '', type: 'gallery', position: 4 },
+  { id: '5', title: '', description: '', image_url: '', type: 'gallery', position: 5 },
+  { id: '6', title: '', description: '', image_url: '', type: 'gallery', position: 6 },
 ];
 
 const DEFAULT_PROCESS: PortfolioItem[] = [
