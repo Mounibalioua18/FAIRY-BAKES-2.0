@@ -601,26 +601,33 @@ export const TAOB: React.FC = () => {
                   <p className="text-stone-500 font-light">Un processus simple et rapide pour accéder à la formation</p>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 relative">
-                  {/* Connecting Line pattern (desktop) */}
-                  <div className="hidden md:block absolute top-[2.5rem] left-[15%] w-[70%] h-px bg-stone-200 border-t border-dashed border-stone-300 -z-10"></div>
-                  
-                  <div className="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm text-center relative group hover:-translate-y-1 transition-transform duration-300">
-                    <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-500 font-serif text-xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-rose-100 group-hover:bg-rose-400 group-hover:text-white transition-colors">1</div>
-                    <h4 className="font-serif text-xl text-stone-900 mb-3">Le Paiement</h4>
-                    <p className="text-stone-600 font-light text-sm leading-relaxed">Transférez le montant de 2500 DA via BaridiMob ou CCP en utilisant nos coordonnées.</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative px-4 md:px-0">
+                  <div className="flex flex-col relative group">
+                    <div className="flex items-center mb-6">
+                      <span className="font-serif text-4xl text-rose-300 mr-4 group-hover:text-rose-400 transition-colors">01.</span>
+                      <div className="h-px bg-stone-200 flex-1 group-hover:bg-rose-200 transition-colors"></div>
+                    </div>
+                    <h4 className="font-serif text-xl text-stone-900 mb-2">Le Paiement</h4>
+                    <p className="text-stone-500 font-light text-sm leading-relaxed">Transférez le montant de 2500 DA via BaridiMob ou CCP en utilisant nos coordonnées.</p>
                   </div>
                   
-                  <div className="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm text-center relative group hover:-translate-y-1 transition-transform duration-300">
-                    <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-500 font-serif text-xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-rose-100 group-hover:bg-rose-400 group-hover:text-white transition-colors">2</div>
-                    <h4 className="font-serif text-xl text-stone-900 mb-3">La Preuve</h4>
-                    <p className="text-stone-600 font-light text-sm leading-relaxed">Faites une capture d'écran du transfert réussi ou prenez en photo le reçu de la poste.</p>
+                  <div className="flex flex-col relative group">
+                    <div className="flex items-center mb-6">
+                      <span className="font-serif text-4xl text-rose-300 mr-4 group-hover:text-rose-400 transition-colors">02.</span>
+                      <div className="h-px bg-stone-200 flex-1 group-hover:bg-rose-200 transition-colors"></div>
+                    </div>
+                    <h4 className="font-serif text-xl text-stone-900 mb-2">La Preuve</h4>
+                    <p className="text-stone-500 font-light text-sm leading-relaxed">Faites une capture d'écran du transfert réussi ou prenez en photo le reçu de la poste.</p>
                   </div>
                   
-                  <div className="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm text-center relative group hover:-translate-y-1 transition-transform duration-300">
-                    <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-500 font-serif text-xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-rose-100 group-hover:bg-rose-400 group-hover:text-white transition-colors">3</div>
-                    <h4 className="font-serif text-xl text-stone-900 mb-3">Le Formulaire</h4>
-                    <p className="text-stone-600 font-light text-sm leading-relaxed">Remplissez le formulaire ci-dessous avec vos informations et attachez la photo du reçu.</p>
+                  <div className="flex flex-col relative group">
+                    <div className="flex items-center mb-6">
+                      <span className="font-serif text-4xl text-rose-300 mr-4 group-hover:text-rose-400 transition-colors">03.</span>
+                      {/* Hide the horizontal line on desktop for the last item since it's at the edge, keep it on mobile */}
+                      <div className="h-px bg-stone-200 flex-1 md:bg-transparent group-hover:bg-rose-200 md:group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <h4 className="font-serif text-xl text-stone-900 mb-2">Le Formulaire</h4>
+                    <p className="text-stone-500 font-light text-sm leading-relaxed">Remplissez le formulaire ci-dessous avec vos informations et attachez la photo du reçu.</p>
                   </div>
                 </div>
               </div>
