@@ -74,6 +74,8 @@ export const TAOB: React.FC = () => {
       if (val.length <= 10) {
         setFormData(prev => ({ ...prev, [e.target.id]: val }));
       }
+    } else if (e.target.id === 'instagram') {
+      setFormData(prev => ({ ...prev, [e.target.id]: e.target.value.toLowerCase() }));
     } else {
       setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
     }
@@ -730,7 +732,18 @@ export const TAOB: React.FC = () => {
                             <label htmlFor="instagram" className={`block text-xs uppercase tracking-widest mb-2 font-bold ${formErrors.instagram ? 'text-red-500' : 'text-stone-500'}`}>Instagram Handle</label>
                             <div className="relative">
                               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-400 font-bold select-none">@</span>
-                              <input type="text" id="instagram" value={formData.instagram} onChange={handleChange} className={`w-full bg-white border rounded-xl pl-9 pr-4 py-3 text-stone-800 focus:outline-none focus:ring-2 transition-all font-light ${formErrors.instagram ? 'border-red-400 focus:ring-red-100' : 'border-stone-200 focus:ring-rose-100'}`} placeholder="votre_compte" required />
+                              <input 
+                                type="text" 
+                                id="instagram" 
+                                value={formData.instagram} 
+                                onChange={handleChange} 
+                                autoCapitalize="none"
+                                autoCorrect="off"
+                                spellCheck="false"
+                                className={`w-full bg-white border rounded-xl pl-9 pr-4 py-3 text-stone-800 focus:outline-none focus:ring-2 transition-all font-light ${formErrors.instagram ? 'border-red-400 focus:ring-red-100' : 'border-stone-200 focus:ring-rose-100'}`} 
+                                placeholder="votre_compte" 
+                                required 
+                              />
                             </div>
                           </div>
                         </div>

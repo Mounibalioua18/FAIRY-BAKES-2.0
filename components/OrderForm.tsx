@@ -360,7 +360,7 @@ export const OrderForm: React.FC = () => {
               </div>
 
               <div className="mb-6">
-                <label className="block text-[10px] uppercase tracking-widest text-stone-500 mb-1.5 font-bold">Inspiration (Max 50MB)</label>
+                <label className="block text-[10px] uppercase tracking-widest text-stone-500 mb-1.5 font-bold">Image d'inspiration</label>
                 <div 
                   onClick={() => !previewUrl && fileInputRef.current?.click()}
                   className={`relative border-2 border-dashed rounded-xl transition-all flex flex-col items-center justify-center p-2 cursor-pointer overflow-hidden ${
