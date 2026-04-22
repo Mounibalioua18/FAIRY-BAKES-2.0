@@ -15,7 +15,9 @@ export const ScrollRestoration = () => {
         }
       }, 100);
     } else {
-      window.scrollTo(0, 0);
+      // Force scroll reset immediately and also just after render to override any lingering UI flashes
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      setTimeout(() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' }), 50);
     }
   }, [pathname, hash]);
 

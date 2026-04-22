@@ -26,11 +26,27 @@ export const Navbar: React.FC = () => {
       <div className="hidden md:flex space-x-6 md:space-x-12 text-[9px] md:text-[11px] uppercase tracking-[0.2em] md:tracking-[0.3em] font-semibold text-stone-500">
         <Link 
           to="/taob" 
+          onClick={(e) => {
+            // Force reset when changing context completely to avoid route-hash conflicts
+            window.scrollTo({ top: 0, behavior: 'instant' });
+          }}
           className={`transition-all hover:tracking-[0.4em] ${isTAOB ? 'text-rose-400' : 'hover:text-rose-400'}`}
         >
           TAOB
         </Link>
-        <Link to="/#order" className="hover:text-rose-400 transition-all hover:tracking-[0.4em]">Réserver votre date</Link>
+        <Link 
+          to="/#order" 
+          onClick={() => {
+            if (location.pathname === '/') {
+              // If already on the home page, scrolling shouldn't be hijacked by route change
+              const el = document.getElementById('order');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+          className="hover:text-rose-400 transition-all hover:tracking-[0.4em]"
+        >
+          Réserver votre date
+        </Link>
       </div>
     </nav>
   );
