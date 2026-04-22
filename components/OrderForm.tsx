@@ -147,6 +147,8 @@ export const OrderForm: React.FC = () => {
       if (val.length <= 10) {
         setFormData(prev => ({ ...prev, [name]: val }));
       }
+    } else if (name === 'instagramHandle') {
+      setFormData(prev => ({ ...prev, [name]: value.toLowerCase() }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
@@ -295,6 +297,9 @@ export const OrderForm: React.FC = () => {
                       value={formData.instagramHandle}
                       onChange={handleChange}
                       placeholder="votre_compte"
+                      autoCapitalize="none"
+                      autoCorrect="off"
+                      spellCheck="false"
                       className="w-full bg-white border border-stone-200 rounded-xl pl-9 pr-4 py-2.5 text-stone-800 focus:outline-none focus:ring-2 focus:ring-rose-100 transition-all"
                     />
                   </div>
