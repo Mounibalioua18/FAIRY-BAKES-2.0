@@ -14,25 +14,31 @@ export function useTracker() {
 
     const ping = async () => {
       try {
-        await supabase
+        // We use a simple insert with ON CONFLICT DO UPDATE style upsert
+        // In the JS client, upsert() does exactly this.
+        const { error } = await supabase
           .from('site_stats')
-          .upsert({ 
-            session_id: sessionId, 
-            last_ping: new Date().toISOString()
-          }, { 
-            onConflict: 'session_id' 
-          });
+          .upsert(
+            { 
+              session_id: sessionId, 
+              last_ping: new Date().toISOString()
+            },
+            { onConflict: 'session_id' }
+          );
+        
+        if (error) {
+          console.error('[Tracker] Heartbeat failed:', error.message);
+        }
       } catch (err) {
-        // Silently fail to not disturb user experience
-        console.debug('Tracking ping failed');
+        // Silently fail
       }
     };
 
     // Initial ping on arrival
     ping();
 
-    // Heartbeat every 60 seconds
-    const interval = setInterval(ping, 60000);
+    // Heartbeat every 30 seconds
+    const interval = setInterval(ping, 30000);
 
     return () => clearInterval(interval);
   }, []);
