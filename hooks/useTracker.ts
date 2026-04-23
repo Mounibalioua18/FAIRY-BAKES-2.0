@@ -1,38 +1,27 @@
 import { useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
-const SESSION_KEY = 'fairy_bakes_session_id';
-const LAST_ACTIVE_KEY = 'fairy_bakes_last_active';
-const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes in milliseconds
+const VISITOR_KEY = 'fairy_bakes_visitor_id';
 
 export function useTracker() {
   useEffect(() => {
-    const now = Date.now();
-    // 1. Get or create a unique session ID for this browser
-    let sessionId = localStorage.getItem(SESSION_KEY);
-    const lastActive = localStorage.getItem(LAST_ACTIVE_KEY);
+    // 1. Get or create a PERMANENT unique visitor ID for this browser
+    let visitorId = localStorage.getItem(VISITOR_KEY);
 
-    // If no session, or if inactive for more than 30 minutes, create a new session
-    if (!sessionId || !lastActive || (now - parseInt(lastActive, 10) > SESSION_TIMEOUT)) {
-      sessionId = crypto.randomUUID();
-      localStorage.setItem(SESSION_KEY, sessionId);
+    // If no visitor ID exists, create one forever
+    if (!visitorId) {
+      visitorId = crypto.randomUUID();
+      localStorage.setItem(VISITOR_KEY, visitorId);
     }
-    
-    // Update local activity timestamp
-    localStorage.setItem(LAST_ACTIVE_KEY, now.toString());
 
     const ping = async () => {
-      // Keep local activity alive for across-tab shared logic
-      localStorage.setItem(LAST_ACTIVE_KEY, Date.now().toString());
-
       try {
         // We use a simple insert with ON CONFLICT DO UPDATE style upsert
-        // In the JS client, upsert() does exactly this.
         const { error } = await supabase
           .from('site_stats')
           .upsert(
             { 
-              session_id: sessionId, 
+              session_id: visitorId, // This is now a permanent visitor ID
               last_ping: new Date().toISOString()
             },
             { onConflict: 'session_id' }
