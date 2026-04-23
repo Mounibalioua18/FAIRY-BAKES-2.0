@@ -795,6 +795,12 @@ export const TAOB: React.FC = () => {
                             )}
                           </div>
                         </div>
+
+                        {/* Honeypot field - visually hidden, bots will fill this */}
+                        <div className="absolute left-[-9999px] top-[-9999px]" aria-hidden="true">
+                          <label htmlFor="bot_field_website">Leave this field empty if you are human</label>
+                          <input type="text" name="bot_field_website" id="bot_field_website" tabIndex={-1} autoComplete="off" />
+                        </div>
                         
                         <button disabled={status === FormStatus.SUBMITTING} type="submit" className="w-full mt-4 bg-stone-900 text-white py-5 rounded-xl font-medium tracking-[0.2em] uppercase text-sm hover:bg-rose-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center">
                           {status === FormStatus.SUBMITTING ? (
