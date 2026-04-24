@@ -49,8 +49,8 @@ export const Hero: React.FC<HeroProps> = ({ mainImage }) => {
   return (
     <section className="no-reveal pt-32 pb-20 px-6 md:px-12 max-w-[1400px] mx-auto overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-        {/* Text content - Appears second on mobile, first on desktop */}
-        <div ref={contentRef} className="lg:col-span-5 z-10 order-2 lg:order-1">
+        {/* Text content */}
+        <div ref={contentRef} className="lg:col-span-5 z-10">
           <span className="hero-fade-in inline-block text-rose-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">
             Gâteaux Artisanaux d'Alger
           </span>
@@ -72,8 +72,8 @@ export const Hero: React.FC<HeroProps> = ({ mainImage }) => {
           </div>
         </div>
 
-        {/* Image content - Appears first on mobile, second on desktop */}
-        <div ref={imageContainerRef} className="lg:col-span-7 relative h-[450px] md:h-[650px] lg:h-[750px] rounded-[2.5rem] overflow-hidden shadow-sm order-1 lg:order-2">
+        {/* Image content */}
+        <div ref={imageContainerRef} className="lg:col-span-7 relative h-[450px] md:h-[650px] lg:h-[750px] rounded-[2.5rem] overflow-hidden shadow-sm">
           <img 
             ref={imageRef}
             src={mainImage.image_url} 
