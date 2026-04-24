@@ -47,26 +47,26 @@ export const Hero: React.FC<HeroProps> = ({ mainImage }) => {
   }, []);
 
   return (
-    <section className="no-reveal pt-24 md:pt-32 pb-16 md:pb-20 px-4 md:px-12 max-w-[1400px] mx-auto overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16 items-center">
+    <section className="no-reveal pt-32 pb-20 px-6 md:px-12 max-w-[1400px] mx-auto overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
         {/* Text content */}
         <div ref={contentRef} className="lg:col-span-5 z-10">
-          <span className="hero-fade-in inline-block text-rose-400 uppercase tracking-[0.3em] text-[10px] md:text-xs font-semibold mb-3 md:mb-4">
+          <span className="hero-fade-in inline-block text-rose-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">
             Gâteaux Artisanaux d'Alger
           </span>
-          <h1 ref={titleRef} className="text-4xl md:text-7xl lg:text-8xl font-serif leading-tight text-stone-900 mb-4 md:mb-6 mt-4 lg:mt-0">
+          <h1 ref={titleRef} className="text-5xl md:text-7xl lg:text-8xl font-serif leading-tight text-stone-900 mb-6 mt-4 lg:mt-0">
             L'Art Gourmand <br />
             <span className="italic font-normal text-stone-600">pour vos</span> <br />
             Moments Uniques
           </h1>
-          <p className="hero-fade-in text-stone-500 text-sm md:text-xl max-w-md leading-relaxed mb-6 md:mb-10 font-light">
+          <p className="hero-fade-in text-stone-500 text-lg md:text-xl max-w-md leading-relaxed mb-10 font-light">
             Nous transformons la farine et le sucre en chefs-d'œuvre floraux et féeriques. Chaque gâteau est une histoire unique racontée à travers des strates de gourmandise. Vous souhaitez maîtriser notre art ? Découvrez notre formation exclusive <strong className="font-medium text-stone-800">TAOB</strong>.
           </p>
-          <div className="hero-fade-in flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 md:mb-10 lg:mb-0">
-            <a href="/#order" className="bg-rose-100 text-rose-800 px-6 md:px-8 py-3.5 md:py-4 rounded-full text-[10px] md:text-sm font-semibold uppercase tracking-widest hover:bg-rose-200 transition-all text-center shadow-sm">
+          <div className="hero-fade-in flex flex-col sm:flex-row gap-4 mb-10 lg:mb-0">
+            <a href="/#order" className="bg-rose-100 text-rose-800 px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:bg-rose-200 transition-all text-center shadow-sm">
               Réserver Votre Date
             </a>
-            <Link to="/taob" className="bg-stone-900 text-white px-6 md:px-8 py-3.5 md:py-4 rounded-full text-[10px] md:text-sm font-semibold uppercase tracking-widest hover:bg-stone-800 transition-all text-center">
+            <Link to="/taob" className="bg-stone-900 text-white px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:bg-stone-800 transition-all text-center">
               Rejoindre TAOB
             </Link>
           </div>
