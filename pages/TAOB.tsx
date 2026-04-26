@@ -86,8 +86,24 @@ export const TAOB: React.FC = () => {
     setFormErrors(prev => ({ ...prev, proofFile: false }));
     const file = e.target.files?.[0];
     if (file) {
+      if (file.type.startsWith('video/')) {
+        alert("Les vidéos ne sont pas acceptées, veuillez utiliser une image.");
+        if (e.target) e.target.value = '';
+        return;
+      }
+      if (file.type === 'image/gif') {
+        alert("Les GIFs ne sont pas acceptés, veuillez envoyer une image.");
+        if (e.target) e.target.value = '';
+        return;
+      }
+      if (!file.type.startsWith('image/')) {
+        alert("Ce format de fichier n'est pas accepté. Veuillez utiliser une image (JPEG, PNG, WebP).");
+        if (e.target) e.target.value = '';
+        return;
+      }
       if (file.size > 20 * 1024 * 1024) { // 20MB limit
         alert("L'image est trop volumineuse (Max 20MB).");
+        if (e.target) e.target.value = '';
         return;
       }
       setProofFile(file);
@@ -769,7 +785,7 @@ export const TAOB: React.FC = () => {
                               type="file" 
                               ref={fileInputRef}
                               onChange={handleFileChange}
-                              accept="image/*"
+                              accept="image/jpeg, image/png, image/webp"
                               className="hidden"
                             />
                             
