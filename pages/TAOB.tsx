@@ -6,6 +6,7 @@ import { Footer } from '../components/Footer';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { Check, Play, BookOpen, Infinity, MessageCircle, Send, Copy, AlertCircle, CheckCircle2, Upload, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { checkRateLimit, recordSubmission } from '../lib/rateLimit';
 import { FormStatus } from '../types';
 import { usePortfolio } from '../hooks/usePortfolio';
 
@@ -147,6 +148,13 @@ export const TAOB: React.FC = () => {
       return;
     }
 
+    const { allowed, errorMessage: rateLimitMessage } = checkRateLimit();
+    if (!allowed) {
+      setErrorMessage(rateLimitMessage || 'Limite de demandes atteinte.');
+      setStatus(FormStatus.ERROR);
+      return;
+    }
+
     setStatus(FormStatus.SUBMITTING);
     setErrorMessage(null);
 
@@ -180,6 +188,7 @@ export const TAOB: React.FC = () => {
 
       if (insertError) throw insertError;
 
+      recordSubmission();
       setStatus(FormStatus.SUCCESS);
       setFormData({ name: '', instagram: '', phone: '0' });
       setProofFile(null);

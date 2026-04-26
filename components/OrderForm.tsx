@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Send, CheckCircle2, AlertCircle, Info, Upload, X } from 'lucide-react';
 import { FormStatus, CakeOrder } from '../types';
 import { supabase } from '../lib/supabase';
+import { checkRateLimit, recordSubmission } from '../lib/rateLimit';
 
 export const OrderForm: React.FC = () => {
   const [status, setStatus] = useState<FormStatus>(FormStatus.IDLE);
@@ -74,6 +75,13 @@ export const OrderForm: React.FC = () => {
       return;
     }
 
+    const { allowed, errorMessage: rateLimitMessage } = checkRateLimit();
+    if (!allowed) {
+      setErrorMessage(rateLimitMessage || 'Limite de demandes atteinte.');
+      setStatus(FormStatus.ERROR);
+      return;
+    }
+
     setStatus(FormStatus.SUBMITTING);
 
     try {
@@ -115,6 +123,7 @@ export const OrderForm: React.FC = () => {
 
       if (orderError) throw orderError;
 
+      recordSubmission();
       setStatus(FormStatus.SUCCESS);
       setPreviewUrl(null);
       setSelectedFile(null);
